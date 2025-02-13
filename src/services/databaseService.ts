@@ -1,5 +1,5 @@
 // databaseService.ts
-import { database } from "firebaseConfig";
+import { database } from "@/lib/firebaseConfig";
 import { ref, set, get, child, DataSnapshot } from "firebase/database";
 
 // Function to write user data
