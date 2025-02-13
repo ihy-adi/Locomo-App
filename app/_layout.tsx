@@ -3,11 +3,10 @@ import { Stack } from "expo-router";
 export default function RootLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      {/* Show Splash Screen First */}
-      <Stack.Screen name="(auth)/splash" options={{ headerShown: false }} />
-      
-      {/* Authentication Flow */}
+      {/* Start Directly from Get Started */}
       <Stack.Screen name="(auth)/get-started" options={{ headerShown: false }} />
+
+      {/* Authentication Flow */}
       <Stack.Screen name="(auth)/auth" options={{ headerShown: false }} />
 
       {/* Main App (Tabs) - After Login */}
