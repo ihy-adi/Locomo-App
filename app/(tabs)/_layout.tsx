@@ -24,11 +24,11 @@ export default function TabLayout() {
                         name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24}>
                     </Ionicons>)
             }} />
-            <Tabs.Screen name="index" options={{
-                title: 'Map',
+            {/* <Tabs.Screen name="events" options={{
+                title: 'map',
                 tabBarIcon: ({ color, focused }) => {
                     return <Ionicons name={focused ? 'map' : 'map-outline'} color={color} size={24}/>}
-            }} />
+            }} /> */}
             <Tabs.Screen name="events" options={{
                 title: 'Events',
                 tabBarIcon: ({ color, focused }) => {
