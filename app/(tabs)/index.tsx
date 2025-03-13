@@ -1,9 +1,15 @@
-import { View, Text } from "react-native";
+import { StatusBar } from "expo-status-bar";;
+import { StyleSheet, Text, View } from "react-native";
+import { Link } from "expo-router";
 
-export default function Index() {
+export default function RootLayout() {
   return (
-    <View className="flex-1 items-center justify-center bg-gray-900">
-      <Text className="text-white text-2xl">Welcome to Locomo App!</Text>
+    <View className = "flex-1 justify-center items-center">
+      <Text className = "text-5xl text-primary text-primary font-bold">First App</Text>
+
+      <Link href="/profile" style = {{color: "red"}}>
+        Go to Profile
+      </Link>
     </View>
   );
 }

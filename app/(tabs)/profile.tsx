@@ -1,12 +1,12 @@
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const events = () => {
+const profile = () => {
   return (
     <View>
-      <Text>events</Text>
+      <Text>profile</Text>
     </View>
   )
 }
 
-export default events
+export default profile

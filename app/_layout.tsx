@@ -1,10 +1,15 @@
-import { Stack } from "expo-router";
+import { StyleSheet, Text, View } from 'react-native';
+import { Slot, Stack } from 'expo-router';
+import './globals.css';
 
-export default function RootLayout() {
+
+const RootLayout = () => {
   return (
     <Stack>
-      <Stack.Screen name="(tabs)" options={{headerShown: false}} />
-      <Stack.Screen name="+not-found" />
+      <Stack.Screen name="(tabs)" options={{ headerShown: false }}/>
+      <Stack.Screen name="events/[id]" options = {{ headerShown: false}} />
     </Stack>
-  );
+  )
 }
+
+export default RootLayout
