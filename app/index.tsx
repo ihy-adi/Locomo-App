@@ -1,10 +1,10 @@
 import React from "react";
-import { 
-  View, 
-  Text, 
-  ImageBackground, 
-  StyleSheet, 
-  TouchableOpacity, 
+import {
+  View,
+  Text,
+  ImageBackground,
+  StyleSheet,
+  TouchableOpacity,
   Image
 } from "react-native";
 import { useRouter } from "expo-router";
@@ -14,14 +14,15 @@ export default function GetStarted() {
 
   return (
     <View style={styles.container}>
-      {/* Background Image */}
-      <ImageBackground
-        source={require("../assets/images/get-started.png")} // Ensure correct path
-        style={styles.image}
-      >
-      </ImageBackground>
+      {/* Background Image Wrapper for Rounded Corners */}
+      <View style={styles.imageContainer}>
+        <ImageBackground
+          source={require("../assets/images/get-started.png")} // Ensure correct path
+          style={styles.image}
+        />
+      </View>
 
-      {/* Content */}
+      {/* Content Section */}
       <View style={styles.content}>
         {/* Logo Icon */}
         <View style={styles.iconWrapper}>
@@ -31,10 +32,17 @@ export default function GetStarted() {
           />
         </View>
 
-        {/* Heading */}
-        <Text style={styles.heading}>
-          Life is short and the world is <Text style={styles.highlight}>wide</Text>
-        </Text>
+        {/* Heading with "wide" Image */}
+        <View style={styles.headingContainer}>
+          <Text style={styles.heading}>
+            Life is short and the world is{" "}
+            <Text style={styles.highlight}>wide</Text>
+          </Text>
+          <Image
+            source={require("../assets/images/wide.png")} // Ensure correct path
+            style={styles.wideImage} 
+          />
+        </View>
 
         {/* Description */}
         <Text style={styles.description}>
@@ -57,41 +65,63 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#fff",
   },
+  imageContainer: {
+    width: "100%",
+    height: "50%",
+    borderRadius: 30,
+    overflow: "hidden",
+  },
   image: {
     width: "100%",
-    height: "65%", // Adjusted for better layout
+    height: "100%",
     resizeMode: "cover",
-    borderRadius: 20, // Adjust the value to change the roundness
-    overflow: "hidden",
   },
   content: {
     alignItems: "center",
     paddingHorizontal: 20,
-    marginTop: -70, // Overlapping effect
+    marginTop: 0, // Overlapping effect
   },
   iconWrapper: {
     backgroundColor: "white",
     borderRadius: 50,
-    width: 80, // Increased size
-    height: 80, // Increased size
+    width: 80,
+    height: 80,
     alignItems: "center",
     justifyContent: "center",
     marginBottom: 10,
+    shadowColor: "#000", // Soft shadow for 3D effect
+    shadowOpacity: 0.1,
+    shadowOffset: { width: 0, height: 2 },
+    shadowRadius: 4,
+    elevation: 4, // Android shadow
   },
   logo: {
-    width: 80, // Adjusted size
-    height: 80, // Adjusted size
+    width: 70,
+    height: 70,
     resizeMode: "contain",
   },
+  headingContainer: {
+    alignItems: "center", // Centers the text and image
+    marginBottom: 10, // Space before the description
+  },
   heading: {
-    fontSize: 24,
-    fontWeight: "bold",
+    color: "#1B1E28", // Light Text Color
     textAlign: "center",
-    marginBottom: 10,
+    fontFamily: "Inter",
+    fontSize: 30,
+    fontStyle: "normal",
+    fontWeight: "900",
+    lineHeight: 36, // 120% of font size
   },
   highlight: {
-    color: "#7D2EFF",
-    textDecorationLine: "underline",
+    color: "#780ebf",
+  },
+  wideImage: {
+    width: 80, // Adjust width based on design
+    height: 20, // Adjust height based on design
+    resizeMode: "contain",
+    marginTop: 0, // Small gap between text and image
+    marginLeft: 110, // Small gap between text and image
   },
   description: {
     fontSize: 16,
@@ -101,10 +131,17 @@ const styles = StyleSheet.create({
     paddingHorizontal: 15,
   },
   button: {
-    backgroundColor: "#7D2EFF",
-    paddingVertical: 16, // Increased size
-    paddingHorizontal: 89, // Increased size
-    borderRadius: 30, // More rounded for a modern look
+    width: 335,
+    height: 56,
+    borderRadius: 16,
+    backgroundColor: "#780EBF",
+    alignItems: "center",
+    justifyContent: "center",
+    shadowColor: "#7D2EFF",
+    shadowOpacity: 0.3,
+    shadowOffset: { width: 0, height: 3 },
+    shadowRadius: 4,
+    elevation: 5, // Shadow for Android
   },
   buttonText: {
     color: "white",
