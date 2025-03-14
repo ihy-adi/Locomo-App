@@ -15,6 +15,7 @@ const SignUp = () => {
 
     const submit = () => {
         // Handle form submission
+        // Firebase add here
     }
 
   return (
