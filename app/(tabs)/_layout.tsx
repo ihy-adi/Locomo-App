@@ -1,4 +1,3 @@
-import { View, Text, ImageBackground } from 'react-native'
 import React from 'react'
 import { Tabs } from 'expo-router'
 import { Ionicons } from '@expo/vector-icons';
@@ -27,6 +26,7 @@ const _layout = () => {
                 shadowOpacity: 0,
             }
         }}
+        
     >
         <Tabs.Screen
         name = "home"

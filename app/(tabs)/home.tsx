@@ -1,15 +1,45 @@
-import { StatusBar } from "expo-status-bar";;
-import { StyleSheet, Text, View } from "react-native";
-import { Link } from "expo-router";
+import { View, Text, FlatList } from 'react-native'
+import React from 'react'
+import { SafeAreaView } from 'react-native-safe-area-context'
+import SearchInput from '@/components/SearchInput'
+import Trending from '@/components/Trending'
 
-export default function RootLayout() {
+const home = () => {
   return (
-    <View className = "flex-1 justify-center items-center">
-      <Text className = "text-5xl text-primary font-bold">Locomo</Text>
+    <SafeAreaView>
+      <FlatList 
+      data = {[{id: 1},{id: 2},{id: 3}]}
+      keyExtractor={(item) => item.id.toString()}
+      renderItem={({item}) => (
+         <Text>{item.id}</Text>
+      )}
+      ListHeaderComponent={() => (
+        <View>
+          <SearchInput
+            placeholder="Search here !!"
+            value=""
+            handleChangeText={() => {}}
+          />
+          <View>
+            {/* Horizontal scrolling view */}
+            <Text>Latest Events</Text>
+            <Trending posts={[{id: "image1 "},{id: "image 2"}]}/>
+          </View>
 
-      <Link href="/profile" style = {{color: "red"}}>
-        Go to Profile
-      </Link>
+
+        </View>
+      )}
+      // If list is empty it will show empty
+      ListEmptyComponent={() => (
+        <Text>Empty</Text>
+      )
+      }
+      />
+    <View>
+      <Text>home</Text>
     </View>
-  );
+    </SafeAreaView>
+  )
 }
+
+export default home
