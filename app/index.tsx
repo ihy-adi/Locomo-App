@@ -51,7 +51,7 @@ export default function GetStarted() {
         </Text>
 
         {/* Navigation Button */}
-        <TouchableOpacity style={styles.button} onPress={() => router.replace("/(tabs)/events")}>
+        <TouchableOpacity style={styles.button} onPress={() => router.replace("/(auth)/sign-in")}>
           <Text style={styles.buttonText}>Get Started</Text>
         </TouchableOpacity>
       </View>
