@@ -34,9 +34,12 @@ export default function GetStarted() {
                 </View>
                 <View style={styles.headingContainer}>
                     <Text style={styles.heading}>
-                        Life is short and the world is <Text style={styles.highlight}>wide</Text>
+                        Life is short and the world is{" "}
                     </Text>
-                    <Image source={require("../assets/images/wide.png")} style={styles.wideImage} />
+                    <View style={styles.wideTextContainer}>
+                        <Text style={styles.highlight}>wide</Text>
+                        <Image source={require("../assets/images/wide.png")} style={styles.wideImage} />
+                    </View>
                 </View>
                 <Text style={styles.description}>
                     Providing you with the nearest, best places to visit when you want to explore, meet new people, or you just get bored!!
@@ -50,18 +53,18 @@ export default function GetStarted() {
 }
 
 const styles = StyleSheet.create({
-  container: { flex: 1, backgroundColor: "#fff" },
-  imageContainer: { width: "100%", height: "50%", borderRadius: 30, overflow: "hidden" },
-  image: { width: "100%", height: "100%", resizeMode: "cover" },
-  content: { alignItems: "center", paddingHorizontal: 20 },
-  iconWrapper: { backgroundColor: "white", borderRadius: 50, width: 80, height: 80, alignItems: "center", justifyContent: "center", marginBottom: 10 },
-  logo: { width: 70, height: 70, resizeMode: "contain" },
-  headingContainer: { alignItems: "center", marginBottom: 10 },
-  heading: { color: "#1B1E28", textAlign: "center", fontSize: 30, fontWeight: "900", lineHeight: 36 },
-  highlight: { color: "#780ebf" },
-  wideImage: { width: 80, height: 20, resizeMode: "contain", marginTop: 0, marginLeft: 110 },
-  description: { fontSize: 16, textAlign: "center", color: "gray", marginBottom: 30, paddingHorizontal: 15 },
-  button: { width: 335, height: 56, borderRadius: 16, backgroundColor: "#780EBF", alignItems: "center", justifyContent: "center" },
-  buttonText: { color: "white", fontSize: 18, fontWeight: "bold" },
+    container: { flex: 1, backgroundColor: "#fff" },
+    imageContainer: { width: "100%", height: "50%", borderRadius: 30, overflow: "hidden" },
+    image: { width: "100%", height: "100%", resizeMode: "cover" },
+    content: { alignItems: "center", paddingHorizontal: 20 },
+    iconWrapper: { backgroundColor: "white", borderRadius: 50, width: 80, height: 80, alignItems: "center", justifyContent: "center", marginBottom: 10 },
+    logo: { width: 70, height: 70, resizeMode: "contain" },
+    headingContainer: { alignItems: "center", marginBottom: 10 },
+    heading: { color: "#1B1E28", textAlign: "center", fontSize: 30, fontWeight: "900", lineHeight: 36 },
+    wideTextContainer: { flexDirection: "column", alignItems: "center" }, // Ensures correct alignment
+    highlight: { color: "#780ebf", fontSize: 30, fontWeight: "900" }, // Matches heading size
+    wideImage: { width: 80, height: 20, resizeMode: "contain", marginTop: 5 }, // Adds spacing below "wide"
+    description: { fontSize: 16, textAlign: "center", color: "gray", marginBottom: 30, paddingHorizontal: 15 },
+    button: { width: 335, height: 56, borderRadius: 16, backgroundColor: "#780EBF", alignItems: "center", justifyContent: "center" },
+    buttonText: { color: "white", fontSize: 18, fontWeight: "bold" },
 });
-
