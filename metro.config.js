@@ -1,6 +1,7 @@
-const { getDefaultConfig } = require("expo/metro-config");
-const { withNativeWind } = require('nativewind/metro');
+// Learn more https://docs.expo.io/guides/customizing-metro
+const { getDefaultConfig } = require('@expo/metro-config');
 
-const config = getDefaultConfig(__dirname)
+const defaultConfig = getDefaultConfig(__dirname);
+defaultConfig.resolver.sourceExts = [...defaultConfig.resolver.sourceExts, 'jsx', 'js', 'ts', 'tsx'];
 
-module.exports = withNativeWind(config, { input: './app/globals.css' })
+module.exports = defaultConfig;

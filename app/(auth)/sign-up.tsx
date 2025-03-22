@@ -3,69 +3,73 @@ import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
-import { Link } from 'expo-router';
+import { Link, useRouter } from 'expo-router';
+import { FIREBASE_AUTH } from '@/FirebaseConfig';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
 
 const SignUp = () => {
-    const [form, setForm] = useState({
-        username: "",
-        email: "",
-        password: ""
-    })
-    const [isSubmitting, setIsSubmitting] = useState(false)
+  const router = useRouter();
+  const [form, setForm] = useState({
+    username: "",
+    email: "",
+    password: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
 
-    const submit = () => {
-        // Handle form submission
-        // Firebase add here
+  const submit = async () => {
+    setIsSubmitting(true);
+    setError("");
+
+    try {
+      await createUserWithEmailAndPassword(FIREBASE_AUTH, form.email, form.password);
+      router.replace("/sign-in"); // Redirect to login page after sign up
+    } catch (err) {
+      setError("Failed to create account. Try again.");
+      console.error(err);
     }
+
+    setIsSubmitting(false);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
         <View style={styles.innerContainer}>
-          <Image
-            source={require('../../assets/images/Locomo_logo.jpeg')} // Ensure correct path
-            resizeMode='contain'
-            style={styles.logo}
-          />
-          <Text style={styles.title}>
-            Sign Up to Locomo
-          </Text>
+          <Image source={require('../../assets/images/Locomo_logo.jpeg')} resizeMode='contain' style={styles.logo} />
+          <Text style={styles.title}>Sign Up to Locomo</Text>
+
+          {error ? <Text style={styles.errorText}>{error}</Text> : null}
+
           <FormField 
-          title="Username"
-          value={form.username}
-          placeholder="Enter your email"
-          handleChangeText={(e: string) => setForm({ ...form, email: e })}
-          otherstyles={styles.formField}
+            title="Username"
+            value={form.username}
+            placeholder="Enter your username"
+            handleChangeText={(e: string) => setForm({ ...form, username: e })}
+            otherstyles={styles.formField}
           />
           <FormField 
-          title="Email"
-          value={form.email}
-          placeholder="Enter your email"
-          handleChangeText={(e: string) => setForm({ ...form, email: e })}
-          otherstyles={styles.formField}
-          keyboardType="email-address"
+            title="Email"
+            value={form.email}
+            placeholder="Enter your email"
+            handleChangeText={(e: string) => setForm({ ...form, email: e })}
+            otherstyles={styles.formField}
+            keyboardType="email-address"
           />
           <FormField 
-          title="Password"
-          value={form.password}
-          placeholder="Enter your password"
-          handleChangeText={(e: string) => setForm({ ...form, password: e })}
-          otherstyles={styles.formField}
+            title="Password"
+            value={form.password}
+            placeholder="Enter your password"
+            handleChangeText={(e: string) => setForm({ ...form, password: e })}
+            otherstyles={styles.formField}
           />
 
-          <CustomButton
-            title="Sign In"
-            handlePress={submit}
-            containerStyles = {styles.button}
-            textStyles = {styles.buttonText}
-            isLoading={isSubmitting}
-            />
+          <CustomButton title="Sign Up" handlePress={submit} containerStyles={styles.button} textStyles={styles.buttonText} isLoading={isSubmitting} />
 
-            <View style={styles.footer}>
-                <Text style={styles.footerText}>Already have an account?</Text>
-                <Link href='/sign-in' style={styles.footerLink}>Log In</Link>
-            </View>
-
+          <View style={styles.footer}>
+            <Text style={styles.footerText}>Already have an account?</Text>
+            <Link href='/sign-in' style={styles.footerLink}>Log In</Link>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -136,7 +140,12 @@ const styles = StyleSheet.create({
     color: '#780EBF',
     fontSize: 14,
     fontWeight: '600',
-  }
+  },
+  errorText: {
+    color: "red",
+    textAlign: "center",
+    marginBottom: 10,
+  },
 });
 
 export default SignUp;

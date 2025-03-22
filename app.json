@@ -15,7 +15,8 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/Locomo_logo.jpeg",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.anonymous.locomo"
     },
     "web": {
       "bundler": "metro",

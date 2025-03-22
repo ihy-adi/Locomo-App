@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "495398499919",
+    "project_id": "loco-b29ba",
+    "storage_bucket": "loco-b29ba.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:495398499919:android:cc4844619069540cd99c3a",
+        "android_client_info": {
+          "package_name": "locomo.com"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD7Z2cNTeb5ABP-Is2weVCn9aZrZqrT4c4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -10,7 +10,7 @@ const profile = () => {
     <SafeAreaView style={styles.container}>
       <View style={styles.profileHeader}>
         <Image
-          source={require("/Users/macbookair/Documents/proj_3rd_year/Locomo-App/assets/images/emoji4.png")} 
+          source={require("../../assets/images/emoji4.png")} 
           style={styles.profileImage}
         />
         <Text style={styles.username}>Anandita S</Text>
