@@ -4,8 +4,9 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
 import { Link, useRouter } from 'expo-router';
-import { FIREBASE_AUTH } from '@/FirebaseConfig';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { FIREBASE_AUTH, db } from '@/FirebaseConfig';
+import { createUserWithEmailAndPassword, updateProfile } from 'firebase/auth';
+import { doc, setDoc } from 'firebase/firestore';
 
 const SignUp = () => {
   const router = useRouter();
@@ -22,7 +23,19 @@ const SignUp = () => {
     setError("");
 
     try {
-      await createUserWithEmailAndPassword(FIREBASE_AUTH, form.email, form.password);
+      const userCredential = await createUserWithEmailAndPassword(FIREBASE_AUTH, form.email, form.password);
+      const user = userCredential.user;
+
+      // Update the user's display name
+      await updateProfile(user, { displayName: form.username });
+
+      // Save user data to Firestore
+      await setDoc(doc(db, "users", user.uid), {
+        username: form.username,
+        email: form.email,
+        uid: user.uid
+      });
+
       router.replace("/sign-in"); // Redirect to login page after sign up
     } catch (err) {
       setError("Failed to create account. Try again.");
@@ -62,6 +75,7 @@ const SignUp = () => {
             placeholder="Enter your password"
             handleChangeText={(e: string) => setForm({ ...form, password: e })}
             otherstyles={styles.formField}
+            secureTextEntry
           />
 
           <CustomButton title="Sign Up" handlePress={submit} containerStyles={styles.button} textStyles={styles.buttonText} isLoading={isSubmitting} />

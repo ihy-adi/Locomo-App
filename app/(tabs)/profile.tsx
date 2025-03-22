@@ -1,28 +1,44 @@
-import React from "react";
-import { View, Text, Image, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import React, { useEffect, useState } from "react";
+import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { useRouter } from "expo-router";
-import { signOut } from "firebase/auth";
-import { auth } from "@/FirebaseConfig"; // Make sure your FirebaseConfig is correctly set up
+import { signOut, onAuthStateChanged } from "firebase/auth";
+import { auth } from "@/FirebaseConfig"; // Ensure Firebase is correctly configured
 
 const Profile = () => {
   const router = useRouter();
+  const [user, setUser] = useState<any>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Listen for authentication state changes
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      setLoading(false);
+    });
+
+    return () => unsubscribe(); // Cleanup listener on unmount
+  }, []);
 
   const handleLogout = async () => {
     try {
       await signOut(auth);
-      router.replace("/(auth)/sign-in"); // Redirect to sign-in after logout
+      router.replace("/(auth)/sign-in"); // Redirect after logout
     } catch (error: any) {
-      Alert.alert("Logout Failed", error.message); // Show an alert if logout fails
+      Alert.alert("Logout Failed", error.message);
     }
   };
+
+  if (loading) {
+    return <ActivityIndicator size="large" color="#780EBF" style={{ flex: 1, justifyContent: "center" }} />;
+  }
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.profileHeader}>
         <Image source={require("../../assets/images/emoji4.png")} style={styles.profileImage} />
-        <Text style={styles.username}>Anandita S</Text>
-        <Text style={styles.email}>anandita@example.com</Text>
+        <Text style={styles.username}>{user?.displayName || "User"}</Text>
+        <Text style={styles.email}>{user?.email || "No email available"}</Text>
       </View>
       
       <View style={styles.menu}>
