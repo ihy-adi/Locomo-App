@@ -3,6 +3,7 @@ import { View, Text, ImageBackground, StyleSheet, TouchableOpacity, Image, Activ
 import { useRouter } from "expo-router";
 import { auth } from "@/FirebaseConfig";
 import { onAuthStateChanged } from "firebase/auth";
+import 'react-native-gesture-handler';
 
 export default function GetStarted() {
     const router = useRouter();
@@ -60,10 +61,10 @@ const styles = StyleSheet.create({
     iconWrapper: { backgroundColor: "white", borderRadius: 50, width: 80, height: 80, alignItems: "center", justifyContent: "center", marginBottom: 10 },
     logo: { width: 70, height: 70, resizeMode: "contain" },
     headingContainer: { alignItems: "center", marginBottom: 10 },
-    heading: { color: "#1B1E28", textAlign: "center", fontSize: 30, fontWeight: "900", lineHeight: 36 },
+    heading: { color: "#1B1E28", textAlign: "center", fontSize: 27, fontWeight: "900", lineHeight: 36 },
     wideTextContainer: { flexDirection: "column", alignItems: "center" }, // Ensures correct alignment
-    highlight: { color: "#780ebf", fontSize: 30, fontWeight: "900" }, // Matches heading size
-    wideImage: { width: 80, height: 20, resizeMode: "contain", marginTop: 5 }, // Adds spacing below "wide"
+    highlight: { color: "#780ebf", fontSize: 27, fontWeight: "900" }, // Matches heading size
+    wideImage: { width: 80, height: 20, resizeMode: "contain", marginTop: 1 }, // Adds spacing below "wide"
     description: { fontSize: 16, textAlign: "center", color: "gray", marginBottom: 30, paddingHorizontal: 15 },
     button: { width: 335, height: 56, borderRadius: 16, backgroundColor: "#780EBF", alignItems: "center", justifyContent: "center" },
     buttonText: { color: "white", fontSize: 18, fontWeight: "bold" },

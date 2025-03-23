@@ -36,7 +36,7 @@ const Profile = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.profileHeader}>
-        <Image source={require("../../assets/images/emoji4.png")} style={styles.profileImage} />
+        <Image source={require("../../assets/images/emoji5.png")} style={styles.profileImage} />
         <Text style={styles.username}>{user?.displayName || "User"}</Text>
         <Text style={styles.email}>{user?.email || "No email available"}</Text>
       </View>

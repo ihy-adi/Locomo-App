@@ -6,6 +6,9 @@ const _layout = () => {
   return (
     <Tabs
         screenOptions={{
+            tabBarActiveTintColor: '#9c28eb', // Active tab color (purple)
+            tabBarInactiveTintColor: 'gray', // Inactive tab color
+            
             tabBarItemStyle:{
                 width: '100%',
                 height: '100%',
@@ -40,12 +43,21 @@ const _layout = () => {
         }}
         />
         <Tabs.Screen
+        name = "food"
+        options={{
+            title: 'Food',
+            headerShown: false,
+            tabBarIcon: ({ color, focused }) => {
+                return <Ionicons name={focused ? 'fast-food' : 'fast-food-outline'} color={color} size={24}/>}
+        }}
+        />
+        <Tabs.Screen
         name = "maps"
         options={{
             title: 'Maps',
             headerShown: false,
             tabBarIcon: ({ color, focused }) => {
-                return <Ionicons name={focused ? 'map' : 'map-outline'} color={color} size={24}/>}
+                return <Ionicons name={focused ? 'map' : 'map-outline'} color="#9c28eb" size={24}/>}
         }}
         />
         <Tabs.Screen
