@@ -13,71 +13,71 @@ interface Place {
   image: string; // Placeholder for image URL or local asset
 }
 
-// Sample data for the places (you can replace this with your actual data)
+// Sample data for the places (Restaurants from the image)
 const placesData: Place[] = [
   {
     id: '1',
-    name: 'Niladri Reservoir',
-    location: 'Tekergat, Sunamgnj',
-    rating: 4.7,
-    price: '$459/Person',
-    image: 'https://images.unsplash.com/photo-1414235077428-338989a2e8c0?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D', // Replace with actual image
+    name: 'Barish Restaurant',
+    location: 'Delhi',
+    rating: 4.2,
+    price: '$300/Person',
+    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop', // Restaurant interior
   },
   {
     id: '2',
-    name: 'Niladri Reservoir',
-    location: 'Tekergat, Sunamgnj',
-    rating: 4.7,
-    price: '$459/Person',
-    image: 'https://images.unsplash.com/photo-1555396273-367ea4eb4db5?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8N3x8cmVzdGF1cmFudHxlbnwwfHwwfHx8MA%3D%3D', // Replace with actual image
+    name: 'Orana',
+    location: 'Delhi',
+    rating: 4.5,
+    price: '$500/Person',
+    image: 'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=2070&auto=format&fit=crop', // Fine dining vibe
   },
   {
     id: '3',
-    name: 'Niladri Reservoir',
-    location: 'Tekergat, Sunamgnj',
-    rating: 4.7,
-    price: '$459/Person',
-    image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTB8fHJlc3RhdXJhbnR8ZW58MHx8MHx8fDA%3D', // Replace with actual image
+    name: 'Gulab',
+    location: 'Delhi',
+    rating: 4.0,
+    price: '$250/Person',
+    image: 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?q=80&w=2070&auto=format&fit=crop', // Indian cuisine
   },
   {
     id: '4',
-    name: 'Casa Las Tirtugas',
-    location: 'Av Damero, Mexico',
-    rating: 4.8,
-    price: '$894/Person',
-    image: 'https://images.unsplash.com/photo-1590846406792-0adc7f938f1d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fHJlc3RhdXJhbnR8ZW58MHx8MHx8fDA%3D', // Replace with actual image
+    name: 'Pizza Lover’s',
+    location: 'Delhi',
+    rating: 4.1,
+    price: '$200/Person',
+    image: 'https://images.unsplash.com/photo-1513104890138-7c14e0f6290b?q=80&w=2070&auto=format&fit=crop', // Pizza image
   },
   {
     id: '5',
-    name: 'Aonang Villa Resort',
-    location: 'Bastola, Islampur',
+    name: 'Jazbaa',
+    location: 'Delhi',
     rating: 4.3,
-    price: '$761/Person',
-    image: 'https://plus.unsplash.com/premium_photo-1663858367001-89e5c92d1e0e?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTN8fGZvb2R8ZW58MHx8MHx8fDA%3D', // Replace with actual image
+    price: '$400/Person',
+    image: 'https://images.unsplash.com/photo-1514320291840-2e0a9bf2a000?q=80&w=2070&auto=format&fit=crop', // Party lounge vibe
   },
   {
     id: '6',
-    name: 'Rangauti Resort',
-    location: 'Sylhet, Airport Road',
-    rating: 4.5,
-    price: '$857/Person',
-    image: 'https://images.unsplash.com/photo-1493770348161-369560ae357d?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTl8fGZvb2R8ZW58MHx8MHx8fDA%3D', // Replace with actual image
+    name: 'Bawarchi Kitchen',
+    location: 'Delhi',
+    rating: 4.0,
+    price: '$280/Person',
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop', // Indian kitchen vibe
   },
   {
     id: '7',
-    name: 'hello Restaurant',
-    location: 'Sylhet, Airport Road',
-    rating: 4.5,
-    price: '$857/Person',
-    image: 'https://images.unsplash.com/photo-1499028344343-cd173ffc68a9?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MjB8fGZvb2R8ZW58MHx8MHx8fDA%3D', // Replace with actual image
+    name: 'Shivam Mangla Chebo',
+    location: 'Delhi',
+    rating: 4.2,
+    price: '$350/Person',
+    image: 'https://images.unsplash.com/photo-1552566626-52f8b828add9?q=80&w=2070&auto=format&fit=crop', // Casual dining
   },
   {
     id: '8',
-    name: 'New Resort',
-    location: 'Sylhet, Airport Road',
-    rating: 4.5,
-    price: '$857/Person',
-    image: 'https://images.unsplash.com/photo-1424847651672-bf20a4b0982b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8NHx8ZWF0aW5nfGVufDB8fDB8fHww', // Replace with actual image
+    name: 'Royal Mutton & Royal Chicken',
+    location: 'Delhi',
+    rating: 4.1,
+    price: '$320/Person',
+    image: 'https://images.unsplash.com/photo-1598515214211-89d3c73ae83b?q=80&w=2070&auto=format&fit=crop', // North Indian food
   },
 ];
 

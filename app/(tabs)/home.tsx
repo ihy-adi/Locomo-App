@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, StyleSheet, TextInput, FlatList, Image, SafeAreaView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, FlatList, Image, SafeAreaView, ScrollView } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 
 // Types for the data
@@ -18,21 +18,78 @@ interface Event {
   image: string;
 }
 
-// Sample data
+// Sample data for Trending Spots (Restaurants from the second image)
 const trendingSpots: Spot[] = [
-  { id: '1', name: 'Niladri Reservoir', location: 'Tekergat, Sunamgnj', image: 'https://images.unsplash.com/photo-1742218410244-6eb97a4a6229?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { id: '2', name: 'Casa Las Tirtugas', location: 'Av Americo, Mexico', image: 'https://plus.unsplash.com/premium_photo-1729068649620-5c17361782d6?q=80&w=2129&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { id: '3', name: 'Casa Las Tirtugas', location: 'Av Americo, Mexico', image: 'https://plus.unsplash.com/premium_photo-1729068649620-5c17361782d6?q=80&w=2129&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { id: '4', name: 'Casa Las Tirtugas', location: 'Av Americo, Mexico', image: 'https://plus.unsplash.com/premium_photo-1729068649620-5c17361782d6?q=80&w=2129&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+  { 
+    id: '1', 
+    name: 'Barish Restaurant', 
+    location: 'Delhi', 
+    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop' // Restaurant interior
+  },
+  { 
+    id: '2', 
+    name: 'Orana', 
+    location: 'Delhi', 
+    image: 'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=2070&auto=format&fit=crop' // Fine dining vibe
+  },
+  { 
+    id: '3', 
+    name: 'Gulab', 
+    location: 'Delhi', 
+    image: 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?q=80&w=2070&auto=format&fit=crop' // Indian cuisine
+  },
+  { 
+    id: '4', 
+    name: 'Pizza Lover’s', 
+    location: 'Delhi', 
+    image: 'https://images.unsplash.com/photo-1513104890138-7c14e0f6290b?q=80&w=2070&auto=format&fit=crop' // Pizza image
+  },
 ];
 
+// Sample data for Events (Events from the first image set)
 const events: Event[] = [
-  { id: '1', name: 'Niladri Reservoir', date: '26 Jan 2022', location: 'Tekergat, Sunamgnj', image: 'https://images.unsplash.com/photo-1741851373479-b43efb3b6e54?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { id: '2', name: 'Niladri Reservoir', date: '26 Jan 2022', location: 'Tekergat, Sunamgnj', image: 'https://images.unsplash.com/photo-1742201408341-29204ea79380?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { id: '3', name: 'Niladri Reservoir', date: '26 Jan 2022', location: 'Tekergat, Sunamgnj', image: 'https://images.unsplash.com/photo-1742201408341-29204ea79380?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { id: '4', name: 'Niladri Reservoir', date: '26 Jan 2022', location: 'Tekergat, Sunamgnj', image: 'https://images.unsplash.com/photo-1742201408341-29204ea79380?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { id: '5', name: 'Niladri Reservoir', date: '26 Jan 2022', location: 'Tekergat, Sunamgnj', image: 'https://images.unsplash.com/photo-1742201408341-29204ea79380?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
-  { id: '6', name: 'Niladri Reservoir', date: '26 Jan 2022', location: 'Tekergat, Sunamgnj', image: 'https://images.unsplash.com/photo-1742275346989-2d696fa2c9b3?q=80&w=1931&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D' },
+  { 
+    id: '1', 
+    name: 'Zamna India', 
+    date: '29 Mar, 4 PM', 
+    location: 'Gurugram', 
+    image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop' // Music festival vibe
+  },
+  { 
+    id: '2', 
+    name: 'NH7 Weekender', 
+    date: '29 Mar, 5 PM', 
+    location: 'Noida', 
+    image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop' // Music festival vibe
+  },
+  { 
+    id: '3', 
+    name: 'World Class Festival 2025', 
+    date: '12 Apr, 4 PM', 
+    location: 'Gurugram', 
+    image: 'https://images.unsplash.com/photo-1533174072545-2d4f9d5e0425?q=80&w=2070&auto=format&fit=crop' // Party/festival atmosphere
+  },
+  { 
+    id: '4', 
+    name: 'SMAAASH FC-25 Championship', 
+    date: '1 May - 31 May, 11 AM', 
+    location: 'Dwarka', 
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop' // Gaming event vibe
+  },
+  { 
+    id: '5', 
+    name: 'Sitar for Mental Health by Rishabh Rikhiram Sharma', 
+    date: '6 Apr, 7 PM', 
+    location: 'Delhi', 
+    image: 'https://images.unsplash.com/photo-1610890684870-0a0b4e4a87e5?q=80&w=2070&auto=format&fit=crop' // Classical music event
+  },
+  { 
+    id: '6', 
+    name: 'Aadyam Theatre presents Saanp Seedhi', 
+    date: '29 Mar - 30 Mar, 7:30 PM', 
+    location: 'Delhi', 
+    image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=2070&auto=format&fit=crop' // Theatre performance vibe
+  },
 ];
 
 const App: React.FC = () => {
@@ -60,7 +117,7 @@ const App: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.safeArea}>
-      <View style={styles.container}>
+      <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
         {/* Search Bar */}
         <View style={styles.searchContainer}>
           <Ionicons name="search" size={20} color="gray" style={styles.searchIcon} />
@@ -88,16 +145,13 @@ const App: React.FC = () => {
         {/* Top Events Near You */}
         <View style={styles.eventsContainer}>
           <Text style={styles.sectionTitle}>Top Events Near You</Text>
-          <FlatList
-            data={events}
-            renderItem={renderEvent}
-            keyExtractor={(item) => item.id}
-            showsVerticalScrollIndicator={false}
-            style={styles.eventList}
-            contentContainerStyle={styles.eventListContent}
-          />
+          {events.map((event) => (
+            <View key={event.id}>
+              {renderEvent({ item: event })}
+            </View>
+          ))}
         </View>
-      </View>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -110,7 +164,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 20,
-    paddingTop: 10,
+  },
+  contentContainer: {
+    paddingBottom: 60, // Add padding to account for the tab bar height
   },
   searchContainer: {
     flexDirection: 'row',
@@ -160,14 +216,7 @@ const styles = StyleSheet.create({
     color: 'gray',
   },
   eventsContainer: {
-    flex: 1,
     paddingTop: 10,
-  },
-  eventList: {
-    flex: 1,
-  },
-  eventListContent: {
-    paddingBottom: 60, // Add padding to account for the tab bar height
   },
   eventCard: {
     flexDirection: 'row',

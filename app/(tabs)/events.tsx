@@ -14,17 +14,49 @@ interface Event {
 }
 
 const featuredEvent = {
-  name: 'Ed Sheeran Concert',
-  location: 'JLN Stadium',
-  time: '6 pm',
-  rating: 4.7,
-  attendees: 50,
+  name: 'Zamna India',
+  location: 'Gurugram',
+  time: '4 PM, 29 Mar',
+  rating: 4.8, // Hypothetical rating
+  attendees: 120, // Hypothetical number of attendees
 };
 
 const events: Event[] = [
-  { id: '1', name: 'Niladri Reservoir', date: '26 Jan 2022', location: 'Tekergat, Sunamganj', image: 'https://images.unsplash.com/photo-1741851373479-b43efb3b6e54?q=80&w=2070&auto=format&fit=crop' },
-  { id: '2', name: 'Sunset at Beach', date: '5 Feb 2022', location: 'Cox’s Bazar', image: 'https://images.unsplash.com/photo-1742201408341-29204ea79380?q=80&w=1964&auto=format&fit=crop' },
-  { id: '3', name: 'Mountain Trek', date: '12 Mar 2022', location: 'Bandarban', image: 'https://images.unsplash.com/photo-1742275346989-2d696fa2c9b3?q=80&w=1931&auto=format&fit=crop' },
+  { 
+    id: '1', 
+    name: 'NH7 Weekender', 
+    date: '29 Mar, 5 PM', 
+    location: 'Noida', 
+    image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop' // Music festival vibe
+  },
+  { 
+    id: '2', 
+    name: 'World Class Festival 2025', 
+    date: '12 Apr, 4 PM', 
+    location: 'Gurugram', 
+    image: 'https://images.unsplash.com/photo-1533174072545-2d4f9d5e0425?q=80&w=2070&auto=format&fit=crop' // Party/festival atmosphere
+  },
+  { 
+    id: '3', 
+    name: 'SMAAASH FC-25 Championship', 
+    date: '1 May - 31 May, 11 AM', 
+    location: 'Dwarka', 
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop' // Gaming event vibe
+  },
+  { 
+    id: '4', 
+    name: 'Sitar for Mental Health by Rishabh Rikhiram Sharma', 
+    date: '6 Apr, 7 PM', 
+    location: 'Delhi', 
+    image: 'https://images.unsplash.com/photo-1610890684870-0a0b4e4a87e5?q=80&w=2070&auto=format&fit=crop' // Classical music event
+  },
+  { 
+    id: '5', 
+    name: 'Aadyam Theatre presents Saanp Seedhi', 
+    date: '29 Mar - 30 Mar, 7:30 PM', 
+    location: 'Delhi', 
+    image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=2070&auto=format&fit=crop' // Theatre performance vibe
+  },
 ];
 
 const EventsScreen: React.FC = () => {
