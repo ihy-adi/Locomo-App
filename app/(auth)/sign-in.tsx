@@ -1,10 +1,10 @@
-import { View, Text, ScrollView, Image, StyleSheet } from "react-native";
+import { View, Text, ScrollView, Image, StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import FormField from "@/components/FormField";
 import CustomButton from "@/components/CustomButton";
 import { Link, useRouter } from "expo-router";
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, sendPasswordResetEmail } from "firebase/auth";
 
 const SignIn = () => {
   const router = useRouter();
@@ -14,6 +14,7 @@ const SignIn = () => {
   });
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [resetSent, setResetSent] = useState(false);
 
   const submit = async () => {
     setIsSubmitting(true);
@@ -31,6 +32,28 @@ const SignIn = () => {
     setIsSubmitting(false);
   };
 
+  const handleForgotPassword = async () => {
+    if (!form.email) {
+      setError("Please enter your email address first");
+      return;
+    }
+    
+    setIsSubmitting(true);
+    setError("");
+    setResetSent(false);
+    
+    try {
+      const auth = getAuth();
+      await sendPasswordResetEmail(auth, form.email);
+      setResetSent(true);
+    } catch (err) {
+      setError("Failed to send password reset email. Please try again.");
+      console.error(err);
+    }
+    
+    setIsSubmitting(false);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollView}>
@@ -43,6 +66,7 @@ const SignIn = () => {
           <Text style={styles.title}>Log in to Locomo</Text>
 
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
+          {resetSent ? <Text style={styles.successText}>Password reset email sent! Please check your inbox.</Text> : null}
 
           <FormField
             title="Email"
@@ -58,7 +82,12 @@ const SignIn = () => {
             placeholder="Enter your password"
             handleChangeText={(e: string) => setForm({ ...form, password: e })}
             otherstyles={styles.formField}
+            secureTextEntry
           />
+
+          <TouchableOpacity onPress={handleForgotPassword}>
+            <Text style={styles.forgotPasswordText}>Forgot Password?</Text>
+          </TouchableOpacity>
 
           <CustomButton
             title="Sign In"
@@ -122,7 +151,7 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 3 },
     shadowRadius: 4,
     elevation: 5,
-    marginTop: 60,
+    marginTop: 30, // Reduced from 60 to make room for forgot password
   },
   buttonText: {
     color: "white",
@@ -149,6 +178,19 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginBottom: 10,
   },
+  successText: {
+    color: "green",
+    textAlign: "center",
+    marginBottom: 10,
+  },
+  forgotPasswordText: {
+    color: "#780EBF",
+    fontSize: 14,
+    fontWeight: "600",
+    textAlign: "right",
+    marginTop: 8,
+    marginBottom: 15,
+  }
 });
 
 export default SignIn;
