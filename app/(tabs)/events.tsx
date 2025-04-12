@@ -14,44 +14,46 @@ interface Event {
 }
 
 const featuredEvent = {
+  id: '1', // Add an ID for the featured event
   name: 'Zamna India',
   location: 'Gurugram',
   time: '4 PM, 29 Mar',
   rating: 4.8, // Hypothetical rating
   attendees: 120, // Hypothetical number of attendees
+  image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop'
 };
 
 const events: Event[] = [
   { 
-    id: '1', 
+    id: '2', // Changed to '2' since '1' is now the featured event
     name: 'NH7 Weekender', 
     date: '29 Mar, 5 PM', 
     location: 'Noida', 
     image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop' // Music festival vibe
   },
   { 
-    id: '2', 
+    id: '3', 
     name: 'World Class Festival 2025', 
     date: '12 Apr, 4 PM', 
     location: 'Gurugram', 
     image: 'https://images.unsplash.com/photo-1533174072545-2d4f9d5e0425?q=80&w=2070&auto=format&fit=crop' // Party/festival atmosphere
   },
   { 
-    id: '3', 
+    id: '4', 
     name: 'SMAAASH FC-25 Championship', 
     date: '1 May - 31 May, 11 AM', 
     location: 'Dwarka', 
     image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop' // Gaming event vibe
   },
   { 
-    id: '4', 
+    id: '5', 
     name: 'Sitar for Mental Health by Rishabh Rikhiram Sharma', 
     date: '6 Apr, 7 PM', 
     location: 'Delhi', 
     image: 'https://images.unsplash.com/photo-1610890684870-0a0b4e4a87e5?q=80&w=2070&auto=format&fit=crop' // Classical music event
   },
   { 
-    id: '5', 
+    id: '6', 
     name: 'Aadyam Theatre presents Saanp Seedhi', 
     date: '29 Mar - 30 Mar, 7:30 PM', 
     location: 'Delhi', 
@@ -62,8 +64,17 @@ const events: Event[] = [
 const EventsScreen: React.FC = () => {
   const router = useRouter(); // Use useRouter for navigation
 
+  // Handle navigation to event details
+  const handleEventPress = (eventId: string) => {
+    router.push(`/events/${eventId}`);
+  };
+
   const renderEvent = ({ item }: { item: Event }) => (
-    <View style={styles.eventCard}>
+    <TouchableOpacity 
+      style={styles.eventCard}
+      onPress={() => handleEventPress(item.id)}
+      activeOpacity={0.8}
+    >
       <Image source={{ uri: item.image }} style={styles.eventImage} />
       <View style={styles.eventDetails}>
         <Text style={styles.eventDate}>{item.date}</Text>
@@ -73,7 +84,7 @@ const EventsScreen: React.FC = () => {
         </Text>
       </View>
       <Ionicons name="chevron-forward" size={24} color="gray" />
-    </View>
+    </TouchableOpacity>
   );
 
   return (
@@ -98,8 +109,12 @@ const EventsScreen: React.FC = () => {
           <TextInput style={styles.searchInput} placeholder="Search Events" placeholderTextColor="gray" />
         </View>
 
-        {/* Featured Event */}
-        <View style={styles.featuredCard}>
+        {/* Featured Event - Now Clickable */}
+        <TouchableOpacity 
+          style={styles.featuredCard}
+          onPress={() => handleEventPress(featuredEvent.id)}
+          activeOpacity={0.9}
+        >
           <Text style={styles.featuredName}>{featuredEvent.name}</Text>
           <View style={styles.featuredDetails}>
             <Text style={styles.featuredLocation}>
@@ -117,13 +132,18 @@ const EventsScreen: React.FC = () => {
               <Ionicons name="people-outline" size={16} color="white" /> +{featuredEvent.attendees}
             </Text>
           </View>
-          <TouchableOpacity
-            style={styles.mapButton}
-            onPress={() => router.push('/maps')} // Use router.push to navigate
-          >
-            <Text style={styles.mapButtonText}>See On The Map</Text>
-          </TouchableOpacity>
-        </View>
+          <View style={styles.mapButtonContainer}>
+            <TouchableOpacity
+              style={styles.mapButton}
+              onPress={(e) => {
+                e.stopPropagation(); // Prevent triggering the parent TouchableOpacity
+                router.push('/maps');
+              }}
+            >
+              <Text style={styles.mapButtonText}>See On The Map</Text>
+            </TouchableOpacity>
+          </View>
+        </TouchableOpacity>
 
         {/* Event List */}
         <FlatList
@@ -221,6 +241,10 @@ const styles = StyleSheet.create({
   featuredAttendees: {
     fontSize: 14,
     color: 'white',
+  },
+  mapButtonContainer: {
+    // This container helps with event propagation
+    width: '100%',
   },
   mapButton: {
     backgroundColor: '#8B5CF6',

@@ -1,6 +1,7 @@
 import React from 'react';
-import { View, Text, StyleSheet, TextInput, FlatList, Image, SafeAreaView, ScrollView } from 'react-native';
+import { View, Text, StyleSheet, TextInput, FlatList, Image, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
+import { useRouter } from 'expo-router';
 
 // Types for the data
 interface Spot {
@@ -40,7 +41,7 @@ const trendingSpots: Spot[] = [
   },
   { 
     id: '4', 
-    name: 'Pizza Lover’s', 
+    name: 'Pizza Lovers', 
     location: 'Delhi', 
     image: 'https://images.unsplash.com/photo-1513104890138-7c14e0f6290b?q=80&w=2070&auto=format&fit=crop' // Pizza image
   },
@@ -93,18 +94,38 @@ const events: Event[] = [
 ];
 
 const App: React.FC = () => {
+  const router = useRouter();
+
+  // Navigate to spot details page
+  const handleSpotPress = (spotId: string) => {
+    router.push(`/spots/${spotId}`);
+  };
+
+  // Navigate to event details page
+  const handleEventPress = (eventId: string) => {
+    router.push(`/events/${eventId}`);
+  };
+
   // Render a trending spot card
   const renderTrendingSpot = ({ item }: { item: Spot }) => (
-    <View style={styles.spotCard}>
+    <TouchableOpacity 
+      style={styles.spotCard} 
+      onPress={() => handleSpotPress(item.id)}
+      activeOpacity={0.8}
+    >
       <Image source={{ uri: item.image }} style={styles.spotImage} />
       <Text style={styles.spotName}>{item.name}</Text>
       <Text style={styles.spotLocation}>{item.location}</Text>
-    </View>
+    </TouchableOpacity>
   );
 
   // Render an event item
   const renderEvent = ({ item }: { item: Event }) => (
-    <View style={styles.eventCard}>
+    <TouchableOpacity 
+      style={styles.eventCard}
+      onPress={() => handleEventPress(item.id)}
+      activeOpacity={0.8}
+    >
       <Image source={{ uri: item.image }} style={styles.eventImage} />
       <View style={styles.eventDetails}>
         <Text style={styles.eventDate}>{item.date}</Text>
@@ -112,7 +133,7 @@ const App: React.FC = () => {
         <Text style={styles.eventLocation}>{item.location}</Text>
       </View>
       <Ionicons name="chevron-forward" size={24} color="gray" />
-    </View>
+    </TouchableOpacity>
   );
 
   return (
