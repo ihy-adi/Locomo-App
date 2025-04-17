@@ -54,9 +54,6 @@ const Profile = () => {
     return <ActivityIndicator size="large" color="#780EBF" style={{ flex: 1, justifyContent: "center" }} />;
   }
 
-  // For debugging - remove in production
-  console.log("Profile rendering with displayName:", user?.displayName, "refresh key:", refreshKey);
-
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.profileHeader}>
@@ -72,12 +69,24 @@ const Profile = () => {
         >
           <Text style={styles.menuText}>Edit Profile</Text>
         </TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.menuItem} 
+          onPress={() => Alert.alert("Favorites", "Favorites functionality coming soon!")}
+        >
+          <Text style={styles.menuText}>Favorites</Text>
+        </TouchableOpacity>
+        <TouchableOpacity 
+          style={styles.menuItem} 
+          onPress={() => router.push('/(modals)/change-password')}
+        >
+          <Text style={styles.menuText}>Change Password</Text>
+        </TouchableOpacity>
         <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
           <Text style={styles.menuText}>Settings</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
+        {/* <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
           <Text style={styles.menuText}>Privacy Policy</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
           <Text style={styles.menuText}>Help & Support</Text>
         </TouchableOpacity>
