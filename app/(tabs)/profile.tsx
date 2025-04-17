@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { View, Text, Image, StyleSheet, TouchableOpacity, Alert, ActivityIndicator } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { useRouter } from "expo-router";
+import { useRouter, useFocusEffect } from "expo-router";
 import { signOut, onAuthStateChanged } from "firebase/auth";
 import { auth } from "@/FirebaseConfig"; // Ensure Firebase is correctly configured
 
@@ -9,11 +9,32 @@ const Profile = () => {
   const router = useRouter();
   const [user, setUser] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [refreshKey, setRefreshKey] = useState(0); // Add a refresh key to force re-render
+
+  // This effect runs whenever the screen comes into focus (like when returning from edit profile)
+  useFocusEffect(
+    React.useCallback(() => {
+      // Force refresh every time the profile screen is focused
+      const currentUser = auth.currentUser;
+      if (currentUser) {
+        // Create a fresh user object to avoid React not detecting changes
+        setUser({...currentUser});
+        setRefreshKey(prevKey => prevKey + 1); // Increment to force re-render
+      }
+      setLoading(false);
+      
+      return () => {}; // No cleanup needed
+    }, [])
+  );
 
   useEffect(() => {
     // Listen for authentication state changes
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      if (currentUser) {
+        setUser({...currentUser}); // Create a new object to ensure React detects changes
+      } else {
+        setUser(null);
+      }
       setLoading(false);
     });
 
@@ -33,16 +54,22 @@ const Profile = () => {
     return <ActivityIndicator size="large" color="#780EBF" style={{ flex: 1, justifyContent: "center" }} />;
   }
 
+  // For debugging - remove in production
+  console.log("Profile rendering with displayName:", user?.displayName, "refresh key:", refreshKey);
+
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.profileHeader}>
         <Image source={require("../../assets/images/emoji5.png")} style={styles.profileImage} />
-        <Text style={styles.username}>{user?.displayName || "User"}</Text>
+        <Text style={styles.username} key={`name-${refreshKey}`}>{user?.displayName || "User"}</Text>
         <Text style={styles.email}>{user?.email || "No email available"}</Text>
       </View>
       
       <View style={styles.menu}>
-        <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
+        <TouchableOpacity 
+          style={styles.menuItem} 
+          onPress={() => router.push('/(modals)/edit-profile')}
+        >
           <Text style={styles.menuText}>Edit Profile</Text>
         </TouchableOpacity>
         <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
