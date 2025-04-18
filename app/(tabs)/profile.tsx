@@ -57,7 +57,10 @@ const Profile = () => {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.profileHeader}>
-        <Image source={require("../../assets/images/emoji5.png")} style={styles.profileImage} />
+        <Image 
+          source={user?.photoURL ? { uri: user.photoURL } : require("../../assets/images/emoji5.png")} 
+          style={styles.profileImage} 
+        />
         <Text style={styles.username} key={`name-${refreshKey}`}>{user?.displayName || "User"}</Text>
         <Text style={styles.email}>{user?.email || "No email available"}</Text>
       </View>
@@ -84,9 +87,6 @@ const Profile = () => {
         <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
           <Text style={styles.menuText}>Settings</Text>
         </TouchableOpacity>
-        {/* <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
-          <Text style={styles.menuText}>Privacy Policy</Text>
-        </TouchableOpacity> */}
         <TouchableOpacity style={styles.menuItem} onPress={() => {}}>
           <Text style={styles.menuText}>Help & Support</Text>
         </TouchableOpacity>

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import * as ImagePicker from "expo-image-picker";
 import { 
   View, 
   Text, 
@@ -14,6 +15,7 @@ import { useRouter, Stack } from "expo-router";
 import { updateProfile, User } from "firebase/auth";
 import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 import { auth } from "@/FirebaseConfig";
+import AddPhoto from "@/app/(modals)/add-photo";
 
 const EditProfile = () => {
   const router = useRouter();
@@ -21,13 +23,13 @@ const EditProfile = () => {
   const [displayName, setDisplayName] = useState("");
   const [birthday, setBirthday] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
-  
+  const [imageUri, setImageUri] = useState<string | null>(null);
+
   useEffect(() => {
-    // Get current user data
     const user = auth.currentUser;
     if (user) {
       setDisplayName(user.displayName || "");
-      // If you had birthday stored somewhere, you would load it here
+      setImageUri(user.photoURL || null);  // Initialize imageUri with the current user's photo URL
     }
   }, []);
 
@@ -44,25 +46,26 @@ const EditProfile = () => {
     try {
       setLoading(true);
       const user = auth.currentUser;
-      
+
       if (user) {
-        // Update display name in Firebase Auth
+        // If an image URI is set, it should be passed to updateProfile
+        const photoURL = imageUri || user.photoURL;  // If no new image, retain old one
+
         await updateProfile(user, {
-          displayName: displayName.trim()
+          displayName: displayName.trim(),
+          photoURL: photoURL,  // Ensure the profile photo is updated
         });
-        
-        // Reload the user to ensure getting fresh data
-        await user.reload();
-        
-        // Here you would also save the birthday to your database
-        // For example, to Firestore if you're using it:
-        // const userRef = doc(db, "users", user.uid);
-        // await setDoc(userRef, { birthday: birthday }, { merge: true });
-        
-        // Force profile page to refresh by using navigation parameters
+
+        await user.reload();  // Reload user to reflect profile update
+
+        // Check if the photo URL has been updated successfully
+        if (user.photoURL === photoURL) {
+          console.log("Profile updated successfully with new photo URL.");
+        }
+
         router.replace({
-          pathname: '/(tabs)/profile', 
-          params: { updated: Date.now() } // Add timestamp to force refresh
+          pathname: '/(tabs)/profile',
+          params: { updated: Date.now() },
         });
       }
     } catch (error: any) {
@@ -79,6 +82,24 @@ const EditProfile = () => {
     setBirthday(currentDate);
   };
 
+  const pickImage = async () => {
+    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (status !== "granted") {
+      Alert.alert("Permission denied", "You need to grant permission to access media library.");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      quality: 0.7,
+      allowsEditing: true,
+      aspect: [1, 1],
+    });
+
+    if (!result.canceled) {
+      setImageUri(result.assets[0].uri);
+    }
+  };
+
   return (
     <>
       <Stack.Screen options={{ headerShown: false }} />
@@ -93,10 +114,14 @@ const EditProfile = () => {
         
         <View style={styles.profileImageContainer}>
           <Image 
-            source={require("../../assets/images/emoji5.png")} 
+            source={
+              imageUri 
+                ? { uri: imageUri } 
+                : require("../../assets/images/emoji5.png")
+            }
             style={styles.profileImage} 
           />
-          <TouchableOpacity style={styles.changePhotoButton}>
+          <TouchableOpacity style={styles.changePhotoButton} onPress={pickImage}>
             <Text style={styles.changePhotoText}>Change Photo</Text>
           </TouchableOpacity>
         </View>
