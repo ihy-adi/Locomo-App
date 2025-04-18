@@ -1,5 +1,5 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
-import React from 'react'
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -11,7 +11,7 @@ const spotsData = [
     name: 'Barish Restaurant', 
     location: 'Delhi', 
     image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop',
-    description: 'Barish Restaurant offers a unique dining experience with indoor rain and thunder effects. Enjoy delicious North Indian cuisine in an atmosphere that simulates a monsoon experience.',
+    description: "Barish Restaurant offers a unique dining experience with indoor rain and thunder effects. Enjoy delicious North Indian cuisine in an atmosphere that simulates a monsoon experience.",
     rating: '4.7',
     priceRange: '₹₹₹',
     cuisine: 'North Indian, Continental',
@@ -23,7 +23,7 @@ const spotsData = [
     name: 'Orana', 
     location: 'Delhi', 
     image: 'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=2070&auto=format&fit=crop',
-    description: 'Orana is a fine dining restaurant that celebrates Australian native ingredients. The menu is a showcase of indigenous foods prepared with modern techniques, creating a unique and memorable dining experience.',
+    description: "Orana is a fine dining restaurant that celebrates Australian native ingredients. The menu is a showcase of indigenous foods prepared with modern techniques, creating a unique and memorable dining experience.",
     rating: '4.8',
     priceRange: '₹₹₹₹',
     cuisine: 'Modern Australian, Fine Dining',
@@ -35,7 +35,7 @@ const spotsData = [
     name: 'Gulab', 
     location: 'Delhi', 
     image: 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?q=80&w=2070&auto=format&fit=crop',
-    description: 'Gulab specializes in traditional Indian desserts and sweets. Their rose-flavored treats are particularly famous, and they offer a wide variety of regional Indian sweets prepared using authentic recipes.',
+    description: "Gulab specializes in traditional Indian desserts and sweets. Their rose-flavored treats are particularly famous, and they offer a wide variety of regional Indian sweets prepared using authentic recipes.",
     rating: '4.5',
     priceRange: '₹₹',
     cuisine: 'Indian Desserts, Sweets',
@@ -46,8 +46,8 @@ const spotsData = [
     id: '4', 
     name: 'Pizza Lovers', 
     location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1513104890138-7c14e0f6290b?q=80&w=2070&auto=format&fit=crop',
-    description: 'Pizza Lover\'s is a casual dining pizzeria offering a variety of artisanal pizzas with both classic and innovative toppings. Their wood-fired oven gives the pizzas a distinctive smoky flavor that keeps customers coming back.',
+    image: 'https://images.unsplash.com/photo-1669717879542-65eb286d1b23?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHBpenphJTIwcmVzdHJhdWFudHxlbnwwfHwwfHx8MA%3D%3D',
+    description: "Pizza Lover's is a casual dining pizzeria offering a variety of artisanal pizzas with both classic and innovative toppings. Their wood-fired oven gives the pizzas a distinctive smoky flavor that keeps customers coming back.",
     rating: '4.6',
     priceRange: '₹₹',
     cuisine: 'Italian, Pizzeria',
@@ -60,7 +60,6 @@ const SpotDetails = () => {
   const router = useRouter();
   const { id } = useLocalSearchParams();
   
-  // Find the spot data based on id
   const spotData = spotsData.find(spot => spot.id === id);
   
   if (!spotData) {
@@ -71,7 +70,7 @@ const SpotDetails = () => {
             <Ionicons name="arrow-back" size={24} color="#000" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Place Details</Text>
-          <View style={{width: 24}} /> {/* Empty view for spacing */}
+          <View style={{width: 24}} />
         </View>
         <View style={styles.contentContainer}>
           <Text style={styles.errorText}>Place not found</Text>
@@ -87,7 +86,7 @@ const SpotDetails = () => {
           <Ionicons name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Place Details</Text>
-        <View style={{width: 24}} /> {/* Empty view for spacing */}
+        <View style={{width: 24}} />
       </View>
       
       <ScrollView style={styles.scrollView}>

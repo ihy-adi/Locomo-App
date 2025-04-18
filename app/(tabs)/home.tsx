@@ -43,7 +43,7 @@ const trendingSpots: Spot[] = [
     id: '4', 
     name: 'Pizza Lovers', 
     location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1513104890138-7c14e0f6290b?q=80&w=2070&auto=format&fit=crop' // Pizza image
+    image: 'https://images.unsplash.com/photo-1669717879542-65eb286d1b23?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHBpenphJTIwcmVzdHJhdWFudHxlbnwwfHwwfHx8MA%3D%3D' // Pizza image
   },
 ];
 

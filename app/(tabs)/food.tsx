@@ -2,6 +2,8 @@ import React from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons'; // For the back arrow icon
 import { SafeAreaView } from 'react-native-safe-area-context';
+import { useRouter } from 'expo-router';
+
 
 // Define the type for each place item
 interface Place {
@@ -45,7 +47,7 @@ const placesData: Place[] = [
     location: 'Delhi',
     rating: 4.1,
     price: '$200/Person',
-    image: 'https://images.unsplash.com/photo-1513104890138-7c14e0f6290b?q=80&w=2070&auto=format&fit=crop', // Pizza image
+    image: 'https://images.unsplash.com/photo-1669717879542-65eb286d1b23?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHBpenphJTIwcmVzdHJhdWFudHxlbnwwfHwwfHx8MA%3D%3D', // Pizza image
   },
   {
     id: '5',
@@ -83,9 +85,14 @@ const placesData: Place[] = [
 
 // Component for the screen
 const FoodScreen: React.FC = () => {
+  const router = useRouter();
+
   // Render each place card
   const renderPlaceItem = ({ item }: { item: Place }) => (
-    <View style={styles.card}>
+    <TouchableOpacity
+      onPress={() => router.push(`/spots/${item.id}`)}
+      style={styles.card}
+    >
       <Image source={{ uri: item.image }} style={styles.cardImage} />
       <TouchableOpacity style={styles.heartIcon}>
         <Ionicons name="heart-outline" size={20} color="#fff" />
@@ -102,8 +109,9 @@ const FoodScreen: React.FC = () => {
         </View>
         <Text style={styles.priceText}>{item.price}</Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
+  
 
   return (
     <SafeAreaView style={styles.container}>
