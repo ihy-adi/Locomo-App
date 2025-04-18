@@ -4,10 +4,23 @@ import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
 import Constants from "expo-constants";
 import SearchInput from "../../components/SearchInput";
+import { useLocalSearchParams } from 'expo-router';
 
 const GOOGLE_API_KEY = Constants.expoConfig?.extra?.googleMapsApiKey || "";
 
+interface Place {
+  id: string;
+  name: string;
+  location: string;
+  rating: number;
+  price?: string;
+  image?: string;
+  latitude: number;
+  longitude: number;
+}
+
 const MapsScreen: React.FC = () => {
+  const { places: placesParam, selectedPlaceId } = useLocalSearchParams();
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const [searchText, setSearchText] = useState("");
   const [suggestions, setSuggestions] = useState<any[]>([]);
@@ -16,6 +29,7 @@ const MapsScreen: React.FC = () => {
     longitude: number;
     name: string;
   } | null>(null);
+  const [restaurants, setRestaurants] = useState<Place[]>(placesParam ? JSON.parse(placesParam as string) : []);
   const [region, setRegion] = useState({
     latitude: 28.6139, // Default to Delhi
     longitude: 77.2090,
@@ -23,7 +37,7 @@ const MapsScreen: React.FC = () => {
     longitudeDelta: 0.1,
   });
 
-  // Fetch user location
+  // Fetch user location and nearby restaurants
   useEffect(() => {
     (async () => {
       try {
@@ -40,11 +54,56 @@ const MapsScreen: React.FC = () => {
           latitudeDelta: 0.1,
           longitudeDelta: 0.1,
         });
+
+        // Fetch nearby restaurants if none were passed via params
+        if (!placesParam && GOOGLE_API_KEY) {
+          const response = await fetch(
+            `https://maps.googleapis.com/maps/api/place/nearbysearch/json?` +
+            `location=${currentLocation.coords.latitude},${currentLocation.coords.longitude}` +
+            `&radius=5000&type=restaurant&key=${GOOGLE_API_KEY}`
+          );
+          const data = await response.json();
+          if (data.status === 'OK') {
+            const fetchedPlaces: Place[] = data.results.map((place: any) => ({
+              id: place.place_id,
+              name: place.name,
+              location: place.vicinity,
+              rating: place.rating || 0,
+              price: place.price_level ? `$${place.price_level * 100}/Person` : 'N/A',
+              image: place.photos?.[0]
+                ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${GOOGLE_API_KEY}`
+                : 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop',
+              latitude: place.geometry.location.lat,
+              longitude: place.geometry.location.lng,
+            }));
+            setRestaurants(fetchedPlaces);
+          } else {
+            console.error('Places API error:', data.status, data.error_message || 'Unknown error');
+          }
+        }
+
+        // If a restaurant is selected, center on it
+        if (selectedPlaceId && restaurants.length > 0) {
+          const selected = restaurants.find((place) => place.id === selectedPlaceId);
+          if (selected) {
+            setSelectedPlace({
+              latitude: selected.latitude,
+              longitude: selected.longitude,
+              name: selected.name,
+            });
+            setRegion({
+              latitude: selected.latitude,
+              longitude: selected.longitude,
+              latitudeDelta: 0.05,
+              longitudeDelta: 0.05,
+            });
+          }
+        }
       } catch (error) {
-        console.error("Error fetching location:", error);
+        console.error("Error fetching location or places:", error);
       }
     })();
-  }, []);
+  }, [selectedPlaceId, placesParam, restaurants.length]);
 
   // Fetch autocomplete suggestions
   useEffect(() => {
@@ -180,9 +239,20 @@ const MapsScreen: React.FC = () => {
               pinColor="blue"
             />
           )}
+          {restaurants.map((place) => (
+            <Marker
+              key={place.id}
+              coordinate={{
+                latitude: place.latitude,
+                longitude: place.longitude,
+              }}
+              title={place.name}
+              description={`Rating: ${place.rating || 'N/A'} | ${place.location}`}
+              pinColor="green"
+            />
+          ))}
         </MapView>
 
-        {/* Button to open Google Maps */}
         {selectedPlace && (
           <TouchableOpacity 
             style={styles.openMapsButton}
@@ -238,7 +308,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     marginTop: 10,
     marginBottom: 10,
-    alignItems: "center", // to center the button
+    alignItems: "center",
   },
   map: {
     width: "100%",
