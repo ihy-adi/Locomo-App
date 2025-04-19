@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
-import * as Location from 'expo-location';
-import Constants from 'expo-constants';
+import { useRestaurants } from "../../context/RestaurantData"; // Adjust the import path as necessary
 
 // Define the type for each place item
 interface Place {
@@ -18,79 +17,17 @@ interface Place {
   longitude: number;
 }
 
-const GOOGLE_API_KEY = Constants.expoConfig?.extra?.googleMapsApiKey || '';
-
 const FoodScreen: React.FC = () => {
   const router = useRouter();
-  const [places, setPlaces] = useState<Place[]>([]);
-  const [userLocation, setUserLocation] = useState<Location.LocationObject | null>(null);
-
-  // Fetch user location and nearby restaurants with pagination
-  useEffect(() => {
-    (async () => {
-      try {
-        let { status } = await Location.requestForegroundPermissionsAsync();
-        if (status !== 'granted') {
-          console.log('Location permission denied');
-          return;
-        }
-        let currentLocation = await Location.getCurrentPositionAsync({});
-        setUserLocation(currentLocation);
-
-        // Fetch nearby restaurants
-        if (GOOGLE_API_KEY) {
-          let allPlaces: Place[] = [];
-          let nextPageToken: string | undefined = undefined;
-          const maxPages = 3; // Fetch up to 3 pages (60 results)
-
-          for (let page = 0; page < maxPages; page++) {
-            const url = nextPageToken
-              ? `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${nextPageToken}&key=${GOOGLE_API_KEY}`
-              : `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${currentLocation.coords.latitude},${currentLocation.coords.longitude}&radius=5000&type=restaurant&key=${GOOGLE_API_KEY}`;
-
-            const response: Response = await fetch(url);
-            const data = await response.json();
-
-            if (data.status === 'OK') {
-              const fetchedPlaces: Place[] = data.results.map((place: any) => ({
-                id: place.place_id,
-                name: place.name,
-                location: place.vicinity,
-                rating: place.rating || 0,
-                price: place.price_level ? `$${place.price_level * 100}/Person` : 'N/A',
-                image: place.photos?.[0]
-                  ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${GOOGLE_API_KEY}`
-                  : 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop',
-                latitude: place.geometry.location.lat,
-                longitude: place.geometry.location.lng,
-              }));
-              allPlaces = [...allPlaces, ...fetchedPlaces];
-              setPlaces(allPlaces); // Update state incrementally to show results as they load
-
-              nextPageToken = data.next_page_token;
-              if (!nextPageToken || page === maxPages - 1) break;
-
-              // Wait 2 seconds before requesting the next page, as per API requirements
-              await new Promise((resolve) => setTimeout(resolve, 2000));
-            } else {
-              console.error('Places API error:', data.status, data.error_message || 'Unknown error');
-              break;
-            }
-          }
-        }
-      } catch (error) {
-        console.error('Error fetching location or places:', error);
-      }
-    })();
-  }, []);
+  const { places, loading } = useRestaurants();
 
   // Render each place card
   const renderPlaceItem = ({ item }: { item: Place }) => (
     <TouchableOpacity
       onPress={() =>
         router.push({
-          pathname: '/maps',
-          params: { places: JSON.stringify(places), selectedPlaceId: item.id },
+          pathname: '/spots/[id]',
+          params: { id: item.id, places: JSON.stringify(places) },
         })
       }
       style={styles.card}
@@ -118,7 +55,7 @@ const FoodScreen: React.FC = () => {
     <SafeAreaView style={styles.container}>
       {/* Header */}
       <View style={styles.header}>
-        <TouchableOpacity style={styles.backButton}>
+        <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
           <Ionicons name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
         <Text style={styles.headerTitle}>Food</Text>
@@ -126,8 +63,10 @@ const FoodScreen: React.FC = () => {
 
       {/* All Popular Places Section */}
       <Text style={styles.sectionTitle}>Nearby Restaurants</Text>
-      {places.length === 0 ? (
+      {loading ? (
         <Text style={styles.loadingText}>Loading restaurants...</Text>
+      ) : places.length === 0 ? (
+        <Text style={styles.loadingText}>No restaurants found</Text>
       ) : (
         <FlatList
           data={places}
@@ -143,7 +82,7 @@ const FoodScreen: React.FC = () => {
   );
 };
 
-// Styles
+// Consolidated Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,

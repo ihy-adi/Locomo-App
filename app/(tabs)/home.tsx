@@ -2,6 +2,7 @@ import React from 'react';
 import { View, Text, StyleSheet, TextInput, FlatList, Image, SafeAreaView, ScrollView, TouchableOpacity } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
+import { useRestaurants } from "../../context/RestaurantData";
 
 // Types for the data
 interface Spot {
@@ -19,86 +20,73 @@ interface Event {
   image: string;
 }
 
-// Sample data for Trending Spots (Restaurants from the second image)
-const trendingSpots: Spot[] = [
-  { 
-    id: '1', 
-    name: 'Barish Restaurant', 
-    location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop' // Restaurant interior
-  },
-  { 
-    id: '2', 
-    name: 'Orana', 
-    location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=2070&auto=format&fit=crop' // Fine dining vibe
-  },
-  { 
-    id: '3', 
-    name: 'Gulab', 
-    location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?q=80&w=2070&auto=format&fit=crop' // Indian cuisine
-  },
-  { 
-    id: '4', 
-    name: 'Pizza Lovers', 
-    location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1669717879542-65eb286d1b23?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHBpenphJTIwcmVzdHJhdWFudHxlbnwwfHwwfHx8MA%3D%3D' // Pizza image
-  },
-];
-
-// Sample data for Events (Events from the first image set)
+// Sample data for Events (unchanged)
 const events: Event[] = [
   { 
     id: '1', 
     name: 'Zamna India', 
     date: '29 Mar, 4 PM', 
     location: 'Gurugram', 
-    image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop' // Music festival vibe
+    image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop'
   },
   { 
     id: '2', 
     name: 'NH7 Weekender', 
     date: '29 Mar, 5 PM', 
     location: 'Noida', 
-    image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop' // Music festival vibe
+    image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop'
   },
   { 
     id: '3', 
     name: 'World Class Festival 2025', 
     date: '12 Apr, 4 PM', 
     location: 'Gurugram', 
-    image: 'https://images.unsplash.com/photo-1533174072545-2d4f9d5e0425?q=80&w=2070&auto=format&fit=crop' // Party/festival atmosphere
+    image: 'https://images.unsplash.com/photo-1533174072545-2d4f9d5e0425?q=80&w=2070&auto=format&fit=crop'
   },
   { 
     id: '4', 
     name: 'SMAAASH FC-25 Championship', 
     date: '1 May - 31 May, 11 AM', 
     location: 'Dwarka', 
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop' // Gaming event vibe
+    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop'
   },
   { 
     id: '5', 
     name: 'Sitar for Mental Health by Rishabh Rikhiram Sharma', 
     date: '6 Apr, 7 PM', 
     location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1610890684870-0a0b4e4a87e5?q=80&w=2070&auto=format&fit=crop' // Classical music event
+    image: 'https://images.unsplash.com/photo-1610890684870-0a0b4e4a87e5?q=80&w=2070&auto=format&fit=crop'
   },
   { 
     id: '6', 
     name: 'Aadyam Theatre presents Saanp Seedhi', 
     date: '29 Mar - 30 Mar, 7:30 PM', 
     location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=2070&auto=format&fit=crop' // Theatre performance vibe
+    image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=2070&auto=format&fit=crop'
   },
 ];
 
 const App: React.FC = () => {
   const router = useRouter();
+  const { places, loading, error } = useRestaurants() as { places: { id: string; name: string; location: string; image?: string; rating: number; }[]; loading: boolean; error: string | null; };
+
+  // Get top 5 restaurants by rating
+  const trendingSpots: Spot[] = places
+    .sort((a, b) => b.rating - a.rating)
+    .slice(0, 5)
+    .map(place => ({
+      id: place.id,
+      name: place.name,
+      location: place.location,
+      image: place.image || 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop',
+    }));
 
   // Navigate to spot details page
   const handleSpotPress = (spotId: string) => {
-    router.push(`/spots/${spotId}`);
+    router.push({
+      pathname: '/spots/[id]',
+      params: { id: spotId, places: JSON.stringify(places) },
+    });
   };
 
   // Navigate to event details page
@@ -152,15 +140,23 @@ const App: React.FC = () => {
         {/* Trending Spots */}
         <View>
           <Text style={styles.sectionTitle}>Trending Spots</Text>
-          <FlatList
-            data={trendingSpots}
-            renderItem={renderTrendingSpot}
-            keyExtractor={(item) => item.id}
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.trendingList}
-            contentContainerStyle={styles.trendingListContent}
-          />
+          {loading ? (
+            <Text style={styles.loadingText}>Loading trending spots...</Text>
+          ) : error ? (
+            <Text style={styles.errorText}>{error}</Text>
+          ) : trendingSpots.length === 0 ? (
+            <Text style={styles.loadingText}>No restaurants found</Text>
+          ) : (
+            <FlatList
+              data={trendingSpots}
+              renderItem={renderTrendingSpot}
+              keyExtractor={(item) => item.id}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              style={styles.trendingList}
+              contentContainerStyle={styles.trendingListContent}
+            />
+          )}
         </View>
 
         {/* Top Events Near You */}
@@ -187,7 +183,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
   },
   contentContainer: {
-    paddingBottom: 60, // Add padding to account for the tab bar height
+    paddingBottom: 60,
   },
   searchContainer: {
     flexDirection: 'row',
@@ -267,6 +263,18 @@ const styles = StyleSheet.create({
   eventLocation: {
     fontSize: 14,
     color: 'gray',
+  },
+  loadingText: {
+    fontSize: 16,
+    color: 'gray',
+    textAlign: 'center',
+    marginVertical: 10,
+  },
+  errorText: {
+    fontSize: 16,
+    color: 'red',
+    textAlign: 'center',
+    marginVertical: 10,
   },
 });
 

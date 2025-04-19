@@ -5,6 +5,7 @@ import * as Location from "expo-location";
 import Constants from "expo-constants";
 import SearchInput from "../../components/SearchInput";
 import { useLocalSearchParams } from 'expo-router';
+import { useRestaurants } from "../../context/RestaurantData";
 
 const GOOGLE_API_KEY = Constants.expoConfig?.extra?.googleMapsApiKey || "";
 
@@ -21,6 +22,7 @@ interface Place {
 
 const MapsScreen: React.FC = () => {
   const { places: placesParam, selectedPlaceId } = useLocalSearchParams();
+  const { places: contextPlaces } = useRestaurants();
   const [location, setLocation] = useState<Location.LocationObject | null>(null);
   const [searchText, setSearchText] = useState("");
   const [suggestions, setSuggestions] = useState<any[]>([]);
@@ -29,7 +31,9 @@ const MapsScreen: React.FC = () => {
     longitude: number;
     name: string;
   } | null>(null);
-  const [restaurants, setRestaurants] = useState<Place[]>(placesParam ? JSON.parse(placesParam as string) : []);
+  const [restaurants, setRestaurants] = useState<Place[]>(
+    placesParam ? JSON.parse(placesParam as string) : contextPlaces
+  );
   const [region, setRegion] = useState({
     latitude: 28.6139, // Default to Delhi
     longitude: 77.2090,
@@ -37,7 +41,14 @@ const MapsScreen: React.FC = () => {
     longitudeDelta: 0.1,
   });
 
-  // Fetch user location and nearby restaurants
+  // Update restaurants when contextPlaces changes (if no placesParam)
+  useEffect(() => {
+    if (!placesParam) {
+      setRestaurants(contextPlaces);
+    }
+  }, [contextPlaces, placesParam]);
+
+  // Fetch user location and set initial region
   useEffect(() => {
     (async () => {
       try {
@@ -54,33 +65,6 @@ const MapsScreen: React.FC = () => {
           latitudeDelta: 0.1,
           longitudeDelta: 0.1,
         });
-
-        // Fetch nearby restaurants if none were passed via params
-        if (!placesParam && GOOGLE_API_KEY) {
-          const response = await fetch(
-            `https://maps.googleapis.com/maps/api/place/nearbysearch/json?` +
-            `location=${currentLocation.coords.latitude},${currentLocation.coords.longitude}` +
-            `&radius=5000&type=restaurant&key=${GOOGLE_API_KEY}`
-          );
-          const data = await response.json();
-          if (data.status === 'OK') {
-            const fetchedPlaces: Place[] = data.results.map((place: any) => ({
-              id: place.place_id,
-              name: place.name,
-              location: place.vicinity,
-              rating: place.rating || 0,
-              price: place.price_level ? `$${place.price_level * 100}/Person` : 'N/A',
-              image: place.photos?.[0]
-                ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${GOOGLE_API_KEY}`
-                : 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop',
-              latitude: place.geometry.location.lat,
-              longitude: place.geometry.location.lng,
-            }));
-            setRestaurants(fetchedPlaces);
-          } else {
-            console.error('Places API error:', data.status, data.error_message || 'Unknown error');
-          }
-        }
 
         // If a restaurant is selected, center on it
         if (selectedPlaceId && restaurants.length > 0) {
@@ -100,10 +84,10 @@ const MapsScreen: React.FC = () => {
           }
         }
       } catch (error) {
-        console.error("Error fetching location or places:", error);
+        console.error("Error fetching location:", error);
       }
     })();
-  }, [selectedPlaceId, placesParam, restaurants.length]);
+  }, [selectedPlaceId, restaurants]);
 
   // Fetch autocomplete suggestions
   useEffect(() => {
@@ -162,12 +146,28 @@ const MapsScreen: React.FC = () => {
         });
         setSearchText(description);
         setSuggestions([]);
+        // Note: We no longer re-fetch restaurants here; we use the existing ones from context
       } else {
         console.error("Place details error:", data.status, data.error_message || "Unknown error");
       }
     } catch (error) {
       console.error("Error fetching place details:", error);
     }
+  };
+
+  // Handle "Go Back to My Location"
+  const handleGoBackToLocation = () => {
+    if (!location) return;
+    setSelectedPlace(null);
+    setSearchText("");
+    setSuggestions([]);
+    setRegion({
+      latitude: location.coords.latitude,
+      longitude: location.coords.longitude,
+      latitudeDelta: 0.1,
+      longitudeDelta: 0.1,
+    });
+    // Note: We no longer re-fetch restaurants here; we use the existing ones from context
   };
 
   // Function to open Google Maps
@@ -227,6 +227,7 @@ const MapsScreen: React.FC = () => {
                 longitude: location.coords.longitude,
               }}
               title="You"
+              pinColor="red"
             />
           )}
           {selectedPlace && (
@@ -253,14 +254,24 @@ const MapsScreen: React.FC = () => {
           ))}
         </MapView>
 
-        {selectedPlace && (
-          <TouchableOpacity 
-            style={styles.openMapsButton}
-            onPress={handleOpenInGoogleMaps}
-          >
-            <Text style={styles.openMapsButtonText}>Open in Google Maps</Text>
-          </TouchableOpacity>
-        )}
+        <View style={styles.buttonContainer}>
+          {location && (
+            <TouchableOpacity 
+              style={styles.backButton}
+              onPress={handleGoBackToLocation}
+            >
+              <Text style={styles.backButtonText}>Go Back to My Location</Text>
+            </TouchableOpacity>
+          )}
+          {selectedPlace && (
+            <TouchableOpacity 
+              style={styles.openMapsButton}
+              onPress={handleOpenInGoogleMaps}
+            >
+              <Text style={styles.openMapsButtonText}>Open in Google Maps</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
     </View>
   );
@@ -314,13 +325,30 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
   },
+  buttonContainer: {
+    width: '90%',
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  backButton: {
+    backgroundColor: '#666',
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 10,
+    width: '100%',
+    alignItems: 'center',
+  },
+  backButtonText: {
+    color: 'white',
+    fontWeight: 'bold',
+    fontSize: 16,
+  },
   openMapsButton: {
     backgroundColor: '#4285F4',
     padding: 15,
     borderRadius: 8,
-    marginTop: 10,
+    width: '100%',
     alignItems: 'center',
-    width: '90%',
   },
   openMapsButtonText: {
     color: 'white',

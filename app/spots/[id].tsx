@@ -1,68 +1,77 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
-import React from 'react';
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView, Linking } from 'react-native';
+import React, { useState, useEffect } from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
+import Constants from 'expo-constants';
 
-// Sample data for Trending Spots
-const spotsData = [
-  { 
-    id: '1', 
-    name: 'Barish Restaurant', 
-    location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop',
-    description: "Barish Restaurant offers a unique dining experience with indoor rain and thunder effects. Enjoy delicious North Indian cuisine in an atmosphere that simulates a monsoon experience.",
-    rating: '4.7',
-    priceRange: '₹₹₹',
-    cuisine: 'North Indian, Continental',
-    openingHours: '12PM - 11PM',
-    contactNumber: '+91 98765 43210'
-  },
-  { 
-    id: '2', 
-    name: 'Orana', 
-    location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1551632436-cbf8dd35adfa?q=80&w=2070&auto=format&fit=crop',
-    description: "Orana is a fine dining restaurant that celebrates Australian native ingredients. The menu is a showcase of indigenous foods prepared with modern techniques, creating a unique and memorable dining experience.",
-    rating: '4.8',
-    priceRange: '₹₹₹₹',
-    cuisine: 'Modern Australian, Fine Dining',
-    openingHours: '6PM - 10PM',
-    contactNumber: '+91 98765 12345'
-  },
-  { 
-    id: '3', 
-    name: 'Gulab', 
-    location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092?q=80&w=2070&auto=format&fit=crop',
-    description: "Gulab specializes in traditional Indian desserts and sweets. Their rose-flavored treats are particularly famous, and they offer a wide variety of regional Indian sweets prepared using authentic recipes.",
-    rating: '4.5',
-    priceRange: '₹₹',
-    cuisine: 'Indian Desserts, Sweets',
-    openingHours: '10AM - 10PM',
-    contactNumber: '+91 98765 67890'
-  },
-  { 
-    id: '4', 
-    name: 'Pizza Lovers', 
-    location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1669717879542-65eb286d1b23?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTR8fHBpenphJTIwcmVzdHJhdWFudHxlbnwwfHwwfHx8MA%3D%3D',
-    description: "Pizza Lover's is a casual dining pizzeria offering a variety of artisanal pizzas with both classic and innovative toppings. Their wood-fired oven gives the pizzas a distinctive smoky flavor that keeps customers coming back.",
-    rating: '4.6',
-    priceRange: '₹₹',
-    cuisine: 'Italian, Pizzeria',
-    openingHours: '11AM - 11PM',
-    contactNumber: '+91 98765 54321'
-  },
-];
+const GOOGLE_API_KEY = Constants.expoConfig?.extra?.googleMapsApiKey || '';
+
+interface RestaurantDetails {
+  id: string;
+  name: string;
+  address: string;
+  rating: number;
+  price_level?: number;
+  image?: string;
+  description?: string;
+  types: string[];
+  opening_hours?: { weekday_text: string[] };
+  formatted_phone_number?: string;
+  website?: string;
+}
 
 const SpotDetails = () => {
   const router = useRouter();
-  const { id } = useLocalSearchParams();
-  
-  const spotData = spotsData.find(spot => spot.id === id);
-  
-  if (!spotData) {
+  const { id, places } = useLocalSearchParams();
+  const [restaurantDetails, setRestaurantDetails] = useState<RestaurantDetails | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  // Fetch restaurant details from Google Places API
+  useEffect(() => {
+    const fetchDetails = async () => {
+      if (!GOOGLE_API_KEY || !id) {
+        console.error('API key or place ID missing');
+        setLoading(false);
+        return;
+      }
+
+      try {
+        const response = await fetch(
+          `https://maps.googleapis.com/maps/api/place/details/json?place_id=${id}&fields=name,formatted_address,rating,price_level,photos,editorial_summary,types,opening_hours,formatted_phone_number,website&key=${GOOGLE_API_KEY}`
+        );
+        const data = await response.json();
+        if (data.status === 'OK') {
+          const result = data.result;
+          setRestaurantDetails({
+            id: id as string,
+            name: result.name,
+            address: result.formatted_address,
+            rating: result.rating || 0,
+            price_level: result.price_level,
+            image: result.photos?.[0]
+              ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=800&photoreference=${result.photos[0].photo_reference}&key=${GOOGLE_API_KEY}`
+              : 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop',
+            description: result.editorial_summary?.overview,
+            types: result.types || [],
+            opening_hours: result.opening_hours,
+            formatted_phone_number: result.formatted_phone_number,
+            website: result.website,
+          });
+        } else {
+          console.error('Places API error:', data.status, data.error_message || 'Unknown error');
+        }
+      } catch (error) {
+        console.error('Error fetching restaurant details:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDetails();
+  }, [id]);
+
+  if (loading) {
     return (
       <SafeAreaView style={styles.container}>
         <View style={styles.header}>
@@ -70,10 +79,27 @@ const SpotDetails = () => {
             <Ionicons name="arrow-back" size={24} color="#000" />
           </TouchableOpacity>
           <Text style={styles.headerTitle}>Place Details</Text>
-          <View style={{width: 24}} />
+          <View style={{ width: 24 }} />
         </View>
         <View style={styles.contentContainer}>
-          <Text style={styles.errorText}>Place not found</Text>
+          <Text style={styles.errorText}>Loading...</Text>
+        </View>
+      </SafeAreaView>
+    );
+  }
+
+  if (!restaurantDetails) {
+    return (
+      <SafeAreaView style={styles.container}>
+        <View style={styles.header}>
+          <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
+            <Ionicons name="arrow-back" size={24} color="#000" />
+          </TouchableOpacity>
+          <Text style={styles.headerTitle}>Place Details</Text>
+          <View style={{ width: 24 }} />
+        </View>
+        <View style={styles.contentContainer}>
+          <Text style={styles.errorText}>Restaurant not found</Text>
         </View>
       </SafeAreaView>
     );
@@ -85,53 +111,86 @@ const SpotDetails = () => {
         <TouchableOpacity onPress={() => router.back()} style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#000" />
         </TouchableOpacity>
-        <Text style={styles.headerTitle}>Place Details</Text>
-        <View style={{width: 24}} />
+        <Text style={styles.headerTitle}>Restaurant Details</Text>
+        <View style={{ width: 24 }} />
       </View>
-      
+
       <ScrollView style={styles.scrollView}>
-        <Image source={{ uri: spotData.image }} style={styles.spotImage} />
-        
+        <Image source={{ uri: restaurantDetails.image }} style={styles.spotImage} />
+
         <View style={styles.contentContainer}>
-          <Text style={styles.spotName}>{spotData.name}</Text>
-          
+          <Text style={styles.spotName}>{restaurantDetails.name}</Text>
+
           <View style={styles.ratingContainer}>
             <Ionicons name="star" size={18} color="#FFD700" />
-            <Text style={styles.ratingText}>{spotData.rating}</Text>
-            <Text style={styles.priceRange}>{spotData.priceRange}</Text>
+            <Text style={styles.ratingText}>{restaurantDetails.rating.toFixed(1) || 'N/A'}</Text>
+            <Text style={styles.priceRange}>
+              {restaurantDetails.price_level ? '$'.repeat(restaurantDetails.price_level) : 'N/A'}
+            </Text>
           </View>
-          
+
           <View style={styles.locationContainer}>
             <Ionicons name="location-outline" size={18} color="#780EBF" />
-            <Text style={styles.spotLocation}>{spotData.location}</Text>
+            <Text style={styles.spotLocation}>{restaurantDetails.address}</Text>
           </View>
-          
+
           <View style={styles.divider} />
-          
+
           <Text style={styles.sectionTitle}>About</Text>
-          <Text style={styles.description}>{spotData.description}</Text>
-          
+          <Text style={styles.description}>
+            {restaurantDetails.description || 'No description available.'}
+          </Text>
+
           <View style={styles.divider} />
-          
+
           <View style={styles.infoSection}>
             <View style={styles.infoItem}>
               <Ionicons name="restaurant-outline" size={20} color="#780EBF" />
-              <Text style={styles.infoText}>Cuisine: {spotData.cuisine}</Text>
+              <Text style={styles.infoText}>
+                Cuisine: {restaurantDetails.types.filter(type => type !== 'restaurant' && type !== 'food' && type !== 'point_of_interest' && type !== 'establishment').join(', ') || 'N/A'}
+              </Text>
             </View>
-            
+
             <View style={styles.infoItem}>
               <Ionicons name="time-outline" size={20} color="#780EBF" />
-              <Text style={styles.infoText}>Hours: {spotData.openingHours}</Text>
+              <Text style={styles.infoText}>
+                Hours:{' '}
+                {restaurantDetails.opening_hours?.weekday_text
+                  ? restaurantDetails.opening_hours.weekday_text.join('\n')
+                  : 'N/A'}
+              </Text>
             </View>
-            
+
             <View style={styles.infoItem}>
               <Ionicons name="call-outline" size={20} color="#780EBF" />
-              <Text style={styles.infoText}>{spotData.contactNumber}</Text>
+              <Text style={styles.infoText}>
+                {restaurantDetails.formatted_phone_number || 'N/A'}
+              </Text>
             </View>
+
+            {restaurantDetails.website && (
+              <View style={styles.infoItem}>
+                <Ionicons name="globe-outline" size={20} color="#780EBF" />
+                <Text
+                  style={[styles.infoText, { color: '#780EBF' }]}
+                  onPress={() => Linking.openURL(restaurantDetails.website!)}
+                >
+                  Visit Website
+                </Text>
+              </View>
+            )}
           </View>
-          
-          <TouchableOpacity style={styles.reserveButton}>
-            <Text style={styles.reserveButtonText}>Make Reservation</Text>
+
+          <TouchableOpacity
+            style={styles.mapButton}
+            onPress={() =>
+              router.push({
+                pathname: '/maps',
+                params: { places, selectedPlaceId: id },
+              })
+            }
+          >
+            <Text style={styles.mapButtonText}>See on the Map</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
@@ -228,14 +287,15 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     color: '#444',
   },
-  reserveButton: {
+  mapButton: {
     backgroundColor: '#780EBF',
     borderRadius: 12,
     paddingVertical: 15,
     alignItems: 'center',
     marginTop: 20,
+    marginBottom: 10,
   },
-  reserveButtonText: {
+  mapButtonText: {
     color: 'white',
     fontSize: 16,
     fontWeight: 'bold',
@@ -244,7 +304,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     textAlign: 'center',
     marginTop: 20,
-  }
+  },
 });
 
 export default SpotDetails;
