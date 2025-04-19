@@ -34,6 +34,7 @@ const MapsScreen: React.FC = () => {
   const [restaurants, setRestaurants] = useState<Place[]>(
     placesParam ? JSON.parse(placesParam as string) : contextPlaces
   );
+  const [searchedRestaurants, setSearchedRestaurants] = useState<Place[]>([]);
   const [region, setRegion] = useState({
     latitude: 28.6139, // Default to Delhi
     longitude: 77.2090,
@@ -120,6 +121,40 @@ const MapsScreen: React.FC = () => {
     return () => clearTimeout(debounce);
   }, [searchText]);
 
+  // Fetch nearby restaurants for a given location
+  const fetchNearbyRestaurants = async (latitude: number, longitude: number): Promise<Place[]> => {
+    if (!GOOGLE_API_KEY) {
+      console.error("Cannot fetch restaurants: API key missing");
+      return [];
+    }
+    try {
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&radius=5000&type=restaurant&key=${GOOGLE_API_KEY}`
+      );
+      const data = await response.json();
+      if (data.status === "OK") {
+        return data.results.map((place: any) => ({
+          id: place.place_id,
+          name: place.name,
+          location: place.vicinity,
+          rating: place.rating || 0,
+          price: place.price_level ? `$${place.price_level * 100}/Person` : 'N/A',
+          image: place.photos?.[0]
+            ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photoreference=${place.photos[0].photo_reference}&key=${GOOGLE_API_KEY}`
+            : 'https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop',
+          latitude: place.geometry.location.lat,
+          longitude: place.geometry.location.lng,
+        }));
+      } else {
+        console.error("Nearby search error:", data.status, data.error_message || "Unknown error");
+        return [];
+      }
+    } catch (error) {
+      console.error("Error fetching nearby restaurants:", error);
+      return [];
+    }
+  };
+
   // Handle suggestion selection
   const handleSelectSuggestion = async (placeId: string, description: string) => {
     if (!GOOGLE_API_KEY) {
@@ -146,7 +181,10 @@ const MapsScreen: React.FC = () => {
         });
         setSearchText(description);
         setSuggestions([]);
-        // Note: We no longer re-fetch restaurants here; we use the existing ones from context
+
+        // Fetch restaurants near the selected location
+        const nearbyRestaurants = await fetchNearbyRestaurants(lat, lng);
+        setSearchedRestaurants(nearbyRestaurants);
       } else {
         console.error("Place details error:", data.status, data.error_message || "Unknown error");
       }
@@ -161,13 +199,13 @@ const MapsScreen: React.FC = () => {
     setSelectedPlace(null);
     setSearchText("");
     setSuggestions([]);
+    setSearchedRestaurants([]); // Clear searched restaurants
     setRegion({
       latitude: location.coords.latitude,
       longitude: location.coords.longitude,
       latitudeDelta: 0.1,
       longitudeDelta: 0.1,
     });
-    // Note: We no longer re-fetch restaurants here; we use the existing ones from context
   };
 
   // Function to open Google Maps
@@ -242,7 +280,7 @@ const MapsScreen: React.FC = () => {
           )}
           {restaurants.map((place) => (
             <Marker
-              key={place.id}
+              key={`user-loc-${place.id}`}
               coordinate={{
                 latitude: place.latitude,
                 longitude: place.longitude,
@@ -250,6 +288,18 @@ const MapsScreen: React.FC = () => {
               title={place.name}
               description={`Rating: ${place.rating || 'N/A'} | ${place.location}`}
               pinColor="green"
+            />
+          ))}
+          {searchedRestaurants.map((place) => (
+            <Marker
+              key={`searched-${place.id}`}
+              coordinate={{
+                latitude: place.latitude,
+                longitude: place.longitude,
+              }}
+              title={place.name}
+              description={`Rating: ${place.rating || 'N/A'} | ${place.location}`}
+              pinColor="purple" // Different color for searched location restaurants
             />
           ))}
         </MapView>

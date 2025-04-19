@@ -55,9 +55,9 @@ const SignUp = () => {
           {error ? <Text style={styles.errorText}>{error}</Text> : null}
 
           <FormField 
-            title="Username"
+            title="Name"
             value={form.username}
-            placeholder="Enter your username"
+            placeholder="Enter your name"
             handleChangeText={(e: string) => setForm({ ...form, username: e })}
             otherstyles={styles.formField}
           />
