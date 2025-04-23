@@ -74,7 +74,7 @@ const Profile = () => {
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.menuItem} 
-          onPress={() => Alert.alert("Favorites", "Favorites functionality coming soon!")}
+          onPress={() => router.push('/(tabs)/FavoritesScreen')}
         >
           <Text style={styles.menuText}>Favorites</Text>
         </TouchableOpacity>
