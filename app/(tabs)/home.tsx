@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TextInput, FlatList, Image, SafeAreaView, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
+import { View, Text, StyleSheet, FlatList, Image, SafeAreaView, ScrollView, TouchableOpacity, Alert, ActivityIndicator } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import { collection, query, getDocs, where, onSnapshot } from 'firebase/firestore';
@@ -102,6 +102,7 @@ const App: React.FC = () => {
   const router = useRouter();
   const [favoritedItems, setFavoritedItems] = useState<Set<string>>(new Set());
   const [loadingFavorites, setLoadingFavorites] = useState(false);
+  const [userName, setUserName] = useState<string>(""); // State to store user's name
   const { places, loading, error } = useRestaurants() as {
     places: { id: string; name: string; location: string; image?: string; rating: number }[];
     loading: boolean;
@@ -120,10 +121,35 @@ const App: React.FC = () => {
       type: 'spot',
     }));
 
+  // Get the greeting based on time of day
+  const getGreeting = () => {
+    const currentHour = new Date().getHours();
+    
+    if (currentHour >= 5 && currentHour < 12) {
+      return "Good morning!!";
+    } else if (currentHour >= 12 && currentHour < 18) {
+      return "Good afternoon!!";
+    } else {
+      return "Good evening!!";
+    }
+  };
+
   // Subscribe to auth state and favorites
   useEffect(() => {
     const unsubscribeAuth = auth.onAuthStateChanged((user) => {
       if (user) {
+        // Get user profile to retrieve displayName
+        const userDocRef = collection(db, 'users', user.uid, 'profile');
+        getDocs(userDocRef).then((querySnapshot) => {
+          if (!querySnapshot.empty) {
+            const userData = querySnapshot.docs[0].data();
+            setUserName(userData.displayName || user.displayName || "");
+          } else {
+            // If no profile document exists, use the displayName from auth
+            setUserName(user.displayName || "");
+          }
+        });
+
         setLoadingFavorites(true);
         const q = query(collection(db, 'users', user.uid, 'Favourites'));
         const unsubscribeSnapshot = onSnapshot(
@@ -241,10 +267,9 @@ const App: React.FC = () => {
   return (
     <SafeAreaView style={styles.safeArea}>
       <ScrollView style={styles.container} contentContainerStyle={styles.contentContainer}>
-        {/* Search Bar */}
-        <View style={styles.searchContainer}>
-          <Ionicons name="search" size={20} color="gray" style={styles.searchIcon} />
-          <TextInput style={styles.searchInput} placeholder="Search Places" placeholderTextColor="gray" />
+        {/* Greeting with User's Name (replacing search bar) */}
+        <View style={styles.greetingContainer}>
+          <Text style={styles.greetingText}>{getGreeting()} {userName || "User"}</Text>
         </View>
 
         {/* Trending Spots */}
@@ -293,22 +318,15 @@ const styles = StyleSheet.create({
   contentContainer: {
     paddingBottom: 60,
   },
-  searchContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    backgroundColor: '#f0f0f0',
-    borderRadius: 25,
-    paddingHorizontal: 10,
-    marginBottom: 15,
+  greetingContainer: {
+    paddingVertical: 15,
+    marginBottom: 10,
+    borderRadius: 10,
   },
-  searchIcon: {
-    marginRight: 10,
-  },
-  searchInput: {
-    flex: 1,
-    height: 40,
-    fontSize: 16,
-    color: 'black',
+  greetingText: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: '#9c28eb', // Purple color to match your app theme
   },
   sectionTitle: {
     fontSize: 20,

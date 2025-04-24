@@ -119,16 +119,9 @@ const EventsScreen: React.FC = () => {
     <SafeAreaView style={styles.safeArea}>
       <View style={styles.container}>
         
-        {/* Header */}
+        {/* Header - Modified to align left */}
         <View style={styles.header}>
-          <TouchableOpacity onPress={() => router.back()}>
-            <Ionicons name="chevron-back" size={24} color="black" />
-          </TouchableOpacity>
           <Text style={styles.headerTitle}>Events</Text>
-          <TouchableOpacity>
-            <Ionicons name="notifications-outline" size={24} color="black" />
-            <View style={styles.notificationBadge} />
-          </TouchableOpacity>
         </View>
 
         {/* Search Bar */}
@@ -200,12 +193,13 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: 'row',
     alignItems: 'center',
-    justifyContent: 'space-between',
     marginBottom: 15,
+    // Removed justifyContent: 'space-between' to align text to left
   },
   headerTitle: {
     fontSize: 20,
     fontWeight: 'bold',
+    // Text will naturally align left now
   },
   notificationBadge: {
     position: 'absolute',
