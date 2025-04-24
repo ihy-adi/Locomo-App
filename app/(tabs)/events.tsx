@@ -23,7 +23,7 @@ const featuredEvent = {
   time: '4 PM, 29 Mar',
   rating: 4.8, // Hypothetical rating
   attendees: 120, // Hypothetical number of attendees
-  image: 'https://unsplash.com/photos/purple-and-blue-lights-on-stage-uHzf13WevGc&auto=format&fit=crop'
+  image : "https://images.unsplash.com/photo-1665667283041-5709a0bfc88f?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHVycGxlJTIwY29uY2VydHxlbnwwfHwwfHx8MA%3D%3D",
 };
 
 const events: Event[] = [
@@ -34,7 +34,7 @@ const events: Event[] = [
     location: 'Gurugram',
     latitude: 28.6980,
     longitude: 77.1325,
-    image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop',
+    image : "https://images.unsplash.com/photo-1665667283041-5709a0bfc88f?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHVycGxlJTIwY29uY2VydHxlbnwwfHwwfHx8MA%3D%3D",
     type: 'event',
   },
   {
@@ -44,7 +44,7 @@ const events: Event[] = [
     location: 'Pitampura, Delhi',
     latitude: 28.6980,
     longitude: 77.1325,
-    image:"https://unsplash.com/photos/woman-in-yellow-shirt-smoking-cigarette-PNd98-zAnU0&auto=format&fit=crop",
+    image:"https://images.unsplash.com/photo-1569263835889-9e47e06115f2?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZGV2aSUyMGFydHxlbnwwfHwwfHx8MA%3D%3D",
     type: 'event',
   },
   {
@@ -54,7 +54,7 @@ const events: Event[] = [
     location: 'Connaught Place, New Delhi',
     latitude: 28.6270,
     longitude: 77.2190,
-    image: 'https://unsplash.com/photos/a-classroom-full-of-students-sitting-at-desks-I4lLt9g8i3k&auto=format&fit=crop',
+    image : "https://images.unsplash.com/photo-1557734864-c78b6dfef1b1?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGVkdWNhdGlvbiUyMGZhaXJ8ZW58MHx8MHx8fDA%3D",
     type: 'event',
   },
   {
@@ -64,7 +64,7 @@ const events: Event[] = [
     location: 'Dwarka, Delhi',
     latitude: 28.5916,
     longitude: 77.0460,
-    image: 'https://unsplash.com/photos/group-of-people-running-on-the-road-during-daytime-4oK5BlObZXg&auto=format&fit=crop',
+    image : "https://images.unsplash.com/photo-1719299246434-9fa4f89f61e8?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fG1vbSUyMG1hcmF0aG9ufGVufDB8fDB8fHww",
     type: 'event',
   },
   {
@@ -74,7 +74,7 @@ const events: Event[] = [
     location: 'Pragati Maidan, New Delhi',
     latitude: 28.6139,
     longitude: 77.2480,
-    image: 'https://unsplash.com/photos/a-couple-of-men-standing-next-to-a-white-car-MNuEhctyBuU&auto=format&fit=crop',
+    image : "https://images.unsplash.com/photo-1682591701233-b2dfab9d6424?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGNhciUyMGV4aGliaXRpb258ZW58MHx8MHx8fDA%3D",
     type: 'event',
   },
   {
@@ -84,7 +84,7 @@ const events: Event[] = [
     location: 'Greater Noida',
     latitude: 28.4618,
     longitude: 77.5001,
-    image: 'https://images.unsplash.com/photo-1593642532973-d31b6557fa68?q=80&w=2070&auto=format&fit=crop',
+    image : "https://images.unsplash.com/photo-1703439524413-5ac9e2059f8b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTAwfHxjYXJuaXZhbCUyMGRlbGhpfGVufDB8fDB8fHww",
     type: 'event',
   },
 ];
