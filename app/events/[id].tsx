@@ -1,76 +1,94 @@
-import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native'
-import React from 'react'
+import { View, Text, Image, StyleSheet, TouchableOpacity, ScrollView } from 'react-native';
+import React from 'react';
 import { useLocalSearchParams, useRouter } from 'expo-router';
 import { Ionicons } from '@expo/vector-icons';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const eventsData = [
-  { 
-    id: '1', 
-    name: 'Zamna India', 
-    date: '29 Mar, 4 PM', 
-    location: 'Gurugram', 
+  {
+    id: '1',
+    name: 'Zamna India',
+    date: '29 Mar, 4 PM',
+    location: 'Gurugram',
+    latitude: 28.6980,
+    longitude: 77.1325,
     image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop',
-    description: "Zamna India presents an immersive musical experience featuring top electronic music artists from around the world. Join us for an unforgettable day of music, art, and community in the heart of Gurugram.",
-    organizer: 'Zamna Events',
-    ticketPrice: '₹1500 onwards',
-    attendees: '2.5K+'
+    type: 'event',
+    description: 'A vibrant cultural festival showcasing Indian heritage and traditions with live music, dance performances, and authentic cuisine.',
+    organizer: 'Zamna Events Co.',
+    ticketPrice: '₹500',
+    attendees: '1500',
   },
-  { 
-    id: '2', 
-    name: 'NH7 Weekender', 
-    date: '29 Mar, 5 PM', 
-    location: 'Noida', 
-    image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop',
-    description: "India's happiest music festival is back! NH7 Weekender brings together the best of indie music, rock, folk, and electronic artists on multiple stages for a weekend of musical discovery and celebration.",
-    organizer: 'OML Entertainment',
-    ticketPrice: '₹2500 onwards',
-    attendees: '5K+'
+  {
+    id: '2',
+    name: 'Devi: Traditional Indian Art Workshop',
+    date: '2 Apr, 1 PM',
+    location: 'Pitampura, Delhi',
+    latitude: 28.6980,
+    longitude: 77.1325,
+    image: 'https://images.unsplash.com/photo-1593642532973-d31b6557fa68?q=80&w=2070&auto=format&fit=crop',
+    type: 'event',
+    description: 'Hands-on workshop led by expert artists to learn Madhubani and Warli painting techniques.',
+    organizer: 'Artisans Guild Delhi',
+    ticketPrice: '₹1,200',
+    attendees: '50',
   },
-  { 
-    id: '3', 
-    name: 'World Class Festival 2025', 
-    date: '12 Apr, 4 PM', 
-    location: 'Gurugram', 
-    image: 'https://images.unsplash.com/photo-1533174072545-2d4f9d5e0425?q=80&w=2070&auto=format&fit=crop',
-    description: "World Class Festival 2025 brings together international and local artists for a celebration of music, art, and culture. Experience world-class performances in a stunning venue.",
-    organizer: 'World Class Events',
-    ticketPrice: '₹3000 onwards',
-    attendees: '3K+'
+  {
+    id: '3',
+    name: 'Education Worldwide India Fair',
+    date: '5 Apr, 10 AM',
+    location: 'Connaught Place, New Delhi',
+    latitude: 28.6270,
+    longitude: 77.2190,
+    image: 'https://images.unsplash.com/photo-1581276879432-15aeb15c20e0?q=80&w=2070&auto=format&fit=crop',
+    type: 'event',
+    description: 'An expo connecting students with top universities worldwide, featuring seminars, counselling sessions, and scholarship info.',
+    organizer: 'EduWorld Consultants',
+    ticketPrice: 'Free',
+    attendees: '2000',
   },
-  { 
-    id: '4', 
-    name: 'SMAAASH FC-25 Championship', 
-    date: '1 May - 31 May, 11 AM', 
-    location: 'Dwarka', 
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop',
-    description: "SMAAASH FC-25 Championship is the ultimate gaming tournament for football enthusiasts. Compete against the best players in the region and win exciting prizes.",
-    organizer: 'SMAAASH Entertainment',
-    ticketPrice: '₹500 entry fee',
-    attendees: '1K+'
+  {
+    id: '4',
+    name: 'Mothers Day Run 2025',
+    date: '11 May, 6 AM',
+    location: 'Dwarka, Delhi',
+    latitude: 28.5916,
+    longitude: 77.0460,
+    image: 'https://images.unsplash.com/photo-1526401485004-005db412b4f1?q=80&w=2070&auto=format&fit=crop',
+    type: 'event',
+    description: 'A 5K fun run to celebrate mothers, open for families, includes medal for participants and post-run brunch.',
+    organizer: 'RunForGood Foundation',
+    ticketPrice: '₹300 per participant',
+    attendees: '800',
   },
-  { 
-    id: '5', 
-    name: 'Sitar for Mental Health by Rishabh Rikhiram Sharma', 
-    date: '6 Apr, 7 PM', 
-    location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1610890684870-0a0b4e4a87e5?q=80&w=2070&auto=format&fit=crop',
-    description: "Join sitar maestro Rishabh Rikhiram Sharma for an evening of classical music dedicated to raising awareness about mental health. A portion of the proceeds will be donated to mental health organizations.",
-    organizer: 'Mental Health Foundation',
-    ticketPrice: '₹1000 onwards',
-    attendees: '500+'
+  {
+    id: '5',
+    name: 'MachAuto 2025 Expo',
+    date: '15 May, 10 AM',
+    location: 'Pragati Maidan, New Delhi',
+    latitude: 28.6139,
+    longitude: 77.2480,
+    image: 'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?q=80&w=2070&auto=format&fit=crop',
+    type: 'event',
+    description: 'India\'s premier automobile expo showcasing the latest in automotive tech, electric vehicles, and interactive demos.',
+    organizer: 'AutoExpo India',
+    ticketPrice: '₹1,000',
+    attendees: '5000',
   },
-  { 
-    id: '6', 
-    name: 'Aadyam Theatre presents Saanp Seedhi', 
-    date: '29 Mar - 30 Mar, 7:30 PM', 
-    location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=2070&auto=format&fit=crop',
-    description: "Aadyam Theatre brings you Saanp Seedhi, a powerful play that explores the complexities of human relationships and social dynamics. Directed by a renowned theater personality with an ensemble cast of talented actors.",
-    organizer: 'Aadyam Theatre',
-    ticketPrice: '₹800 onwards',
-    attendees: '300+ per show'
-  }
+  {
+    id: '6',
+    name: '59th IHGF Delhi Fair (Spring)',
+    date: '16 Apr, 9 AM',
+    location: 'Greater Noida',
+    latitude: 28.4618,
+    longitude: 77.5001,
+    image: 'https://images.unsplash.com/photo-1602080755068-7a8b3566e5c4?q=80&w=2070&auto=format&fit=crop',
+    type: 'event',
+    description: 'Leading trade fair for handicrafts, home decor, and lifestyle products with global exhibitors and buyers.',
+    organizer: 'IHGF Federation',
+    ticketPrice: '₹200',
+    attendees: '10000',
+  },
 ];
 
 const EventDetails = () => {
@@ -152,105 +170,27 @@ const EventDetails = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderBottomWidth: 1,
-    borderBottomColor: '#f0f0f0',
-  },
-  backButton: {
-    padding: 5,
-  },
-  headerTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-  },
-  scrollView: {
-    flex: 1,
-  },
-  eventImage: {
-    width: '100%',
-    height: 250,
-    resizeMode: 'cover',
-  },
-  contentContainer: {
-    padding: 20,
-  },
-  eventName: {
-    fontSize: 24,
-    fontWeight: 'bold',
-    marginBottom: 5,
-  },
-  eventDate: {
-    fontSize: 16,
-    color: '#780EBF',
-    marginBottom: 10,
-  },
-  locationContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  eventLocation: {
-    fontSize: 16,
-    color: '#444',
-    marginLeft: 5,
-  },
-  divider: {
-    height: 1,
-    backgroundColor: '#f0f0f0',
-    marginVertical: 20,
-  },
-  sectionTitle: {
-    fontSize: 18,
-    fontWeight: 'bold',
-    marginBottom: 10,
-  },
-  description: {
-    fontSize: 16,
-    lineHeight: 24,
-    color: '#444',
-  },
-  infoRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginBottom: 15,
-  },
-  infoItem: {
-    flex: 1,
-  },
-  infoLabel: {
-    fontSize: 14,
-    color: '#777',
-    marginBottom: 5,
-  },
-  infoValue: {
-    fontSize: 16,
-    fontWeight: '600',
-  },
-  bookButton: {
-    backgroundColor: '#780EBF',
-    borderRadius: 12,
-    paddingVertical: 15,
-    alignItems: 'center',
-    marginTop: 20,
-  },
-  bookButtonText: {
-    color: 'white',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
-  errorText: {
-    fontSize: 18,
-    textAlign: 'center',
-    marginTop: 20,
-  }
+  container: { flex: 1, backgroundColor: '#fff' },
+  header: { flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingHorizontal: 16, paddingVertical: 10, borderBottomWidth: 1, borderBottomColor: '#f0f0f0' },
+  backButton: { padding: 5 },
+  headerTitle: { fontSize: 18, fontWeight: 'bold' },
+  scrollView: { flex: 1 },
+  eventImage: { width: '100%', height: 250, resizeMode: 'cover' },
+  contentContainer: { padding: 20 },
+  eventName: { fontSize: 24, fontWeight: 'bold', marginBottom: 5 },
+  eventDate: { fontSize: 16, color: '#780EBF', marginBottom: 10 },
+  locationContainer: { flexDirection: 'row', alignItems: 'center' },
+  eventLocation: { fontSize: 16, color: '#444', marginLeft: 5 },
+  divider: { height: 1, backgroundColor: '#f0f0f0', marginVertical: 20 },
+  sectionTitle: { fontSize: 18, fontWeight: 'bold', marginBottom: 10 },
+  description: { fontSize: 16, lineHeight: 24, color: '#444' },
+  infoRow: { flexDirection: 'row', justifyContent: 'space-between', marginBottom: 15 },
+  infoItem: { flex: 1 },
+  infoLabel: { fontSize: 14, color: '#777', marginBottom: 5 },
+  infoValue: { fontSize: 16, fontWeight: '600' },
+  bookButton: { backgroundColor: '#780EBF', borderRadius: 12, paddingVertical: 15, alignItems: 'center', marginTop: 20 },
+  bookButtonText: { color: 'white', fontSize: 16, fontWeight: 'bold' },
+  errorText: { fontSize: 18, textAlign: 'center', marginTop: 20 },
 });
 
 export default EventDetails;

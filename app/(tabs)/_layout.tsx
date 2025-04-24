@@ -43,7 +43,7 @@ const _layout = () => {
         }}
         />
         <Tabs.Screen
-        name = "food"
+        name = "foodscreen"
         options={{
             title: 'Food',
             headerShown: false,
@@ -51,6 +51,7 @@ const _layout = () => {
                 return <Ionicons name={focused ? 'fast-food' : 'fast-food-outline'} color={color} size={24}/>}
         }}
         />
+
         <Tabs.Screen
         name = "maps"
         options={{
@@ -60,6 +61,7 @@ const _layout = () => {
                 return <Ionicons name={focused ? 'map' : 'map-outline'} color="#9c28eb" size={24}/>}
         }}
         />
+
         <Tabs.Screen
         name = "events"
         options={{

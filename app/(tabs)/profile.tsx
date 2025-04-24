@@ -74,7 +74,7 @@ const Profile = () => {
         </TouchableOpacity>
         <TouchableOpacity 
           style={styles.menuItem} 
-          onPress={() => router.push('/(tabs)/FavoritesScreen')}
+          onPress={() => router.push({ pathname: '/(modals)/FavoritesScreen' })}
         >
           <Text style={styles.menuText}>Favorites</Text>
         </TouchableOpacity>

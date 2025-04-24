@@ -11,6 +11,9 @@ interface Event {
   date: string;
   location: string;
   image: string;
+  latitude: number;
+  longitude: number;
+  type: 'event' | 'spot';
 }
 
 const featuredEvent = {
@@ -24,40 +27,65 @@ const featuredEvent = {
 };
 
 const events: Event[] = [
-  { 
-    id: '2', // Changed to '2' since '1' is now the featured event
-    name: 'NH7 Weekender', 
-    date: '29 Mar, 5 PM', 
-    location: 'Noida', 
-    image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop' // Music festival vibe
+  {
+    id: '1',
+    name: 'Zamna India',
+    date: '29 Mar, 4 PM',
+    location: 'Gurugram',
+    latitude: 28.6980,
+    longitude: 77.1325,
+    image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop',
+    type: 'event',
   },
-  { 
-    id: '3', 
-    name: 'World Class Festival 2025', 
-    date: '12 Apr, 4 PM', 
-    location: 'Gurugram', 
-    image: 'https://images.unsplash.com/photo-1533174072545-2d4f9d5e0425?q=80&w=2070&auto=format&fit=crop' // Party/festival atmosphere
+  {
+    id: '2',
+    name: 'Devi: Traditional Indian Art Workshop',
+    date: '2 Apr, 1 PM',
+    location: 'Pitampura, Delhi',
+    latitude: 28.6980,
+    longitude: 77.1325,
+    image:"https://unsplash.com/photos/woman-in-yellow-shirt-smoking-cigarette-PNd98-zAnU0&auto=format&fit=crop",
+    type: 'event',
   },
-  { 
-    id: '4', 
-    name: 'SMAAASH FC-25 Championship', 
-    date: '1 May - 31 May, 11 AM', 
-    location: 'Dwarka', 
-    image: 'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?q=80&w=2070&auto=format&fit=crop' // Gaming event vibe
+  {
+    id: '3',
+    name: 'Education Worldwide India Fair',
+    date: '5 Apr, 10 AM',
+    location: 'Connaught Place, New Delhi',
+    latitude: 28.6270,
+    longitude: 77.2190,
+    image: 'https://unsplash.com/photos/a-classroom-full-of-students-sitting-at-desks-I4lLt9g8i3k&auto=format&fit=crop',
+    type: 'event',
   },
-  { 
-    id: '5', 
-    name: 'Sitar for Mental Health by Rishabh Rikhiram Sharma', 
-    date: '6 Apr, 7 PM', 
-    location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1610890684870-0a0b4e4a87e5?q=80&w=2070&auto=format&fit=crop' // Classical music event
+  {
+    id: '4',
+    name: 'Mothers Day Run 2025',
+    date: '11 May, 6 AM',
+    location: 'Dwarka, Delhi',
+    latitude: 28.5916,
+    longitude: 77.0460,
+    image: 'https://unsplash.com/photos/a-group-of-women-running-down-a-street-skoTn6uzKE8&auto=format&fit=crop',
+    type: 'event',
   },
-  { 
-    id: '6', 
-    name: 'Aadyam Theatre presents Saanp Seedhi', 
-    date: '29 Mar - 30 Mar, 7:30 PM', 
-    location: 'Delhi', 
-    image: 'https://images.unsplash.com/photo-1517457373958-b7bdd4587205?q=80&w=2070&auto=format&fit=crop' // Theatre performance vibe
+  {
+    id: '5',
+    name: 'MachAuto 2025 Expo',
+    date: '15 May, 10 AM',
+    location: 'Pragati Maidan, New Delhi',
+    latitude: 28.6139,
+    longitude: 77.2480,
+    image: 'https://unsplash.com/photos/a-couple-of-men-standing-next-to-a-white-car-MNuEhctyBuU&auto=format&fit=crop',
+    type: 'event',
+  },
+  {
+    id: '6',
+    name: '59th IHGF Delhi Fair (Spring)',
+    date: '16 Apr, 9 AM',
+    location: 'Greater Noida',
+    latitude: 28.4618,
+    longitude: 77.5001,
+    image: 'https://images.unsplash.com/photo-1593642532973-d31b6557fa68?q=80&w=2070&auto=format&fit=crop',
+    type: 'event',
   },
 ];
 

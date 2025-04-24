@@ -45,7 +45,7 @@ const events: Event[] = [
     location: 'Pitampura, Delhi',
     latitude: 28.6980,
     longitude: 77.1325,
-    image: 'https://images.unsplash.com/photo-1581090700227-1e8e5f6b3c4e?q=80&w=2070&auto=format&fit=crop',
+    image:"https://unsplash.com/photos/woman-in-yellow-shirt-smoking-cigarette-PNd98-zAnU0&auto=format&fit=crop",
     type: 'event',
   },
   {
@@ -55,7 +55,7 @@ const events: Event[] = [
     location: 'Connaught Place, New Delhi',
     latitude: 28.6270,
     longitude: 77.2190,
-    image: 'https://images.unsplash.com/photo-1571260899304-425eee4c7efc?q=80&w=2070&auto=format&fit=crop',
+    image: 'https://unsplash.com/photos/a-classroom-full-of-students-sitting-at-desks-I4lLt9g8i3k&auto=format&fit=crop',
     type: 'event',
   },
   {
@@ -65,7 +65,7 @@ const events: Event[] = [
     location: 'Dwarka, Delhi',
     latitude: 28.5916,
     longitude: 77.0460,
-    image: 'https://images.unsplash.com/photo-1520975918311-3e9c8f8e8a1f?q=80&w=2070&auto=format&fit=crop',
+    image: 'https://unsplash.com/photos/a-group-of-women-running-down-a-street-skoTn6uzKE8&auto=format&fit=crop',
     type: 'event',
   },
   {
@@ -75,7 +75,7 @@ const events: Event[] = [
     location: 'Pragati Maidan, New Delhi',
     latitude: 28.6139,
     longitude: 77.2480,
-    image: 'https://images.unsplash.com/photo-1581090700227-1e8e5f6b3c4e?q=80&w=2070&auto=format&fit=crop',
+    image: 'https://unsplash.com/photos/a-couple-of-men-standing-next-to-a-white-car-MNuEhctyBuU&auto=format&fit=crop',
     type: 'event',
   },
   {

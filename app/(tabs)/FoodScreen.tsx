@@ -9,7 +9,6 @@ import { auth, db } from '@/FirebaseConfig';
 import { FavoriteService } from '@/app/services/firestore-services';
 import { collection, query, onSnapshot } from 'firebase/firestore';
 
-// Define the type for each place item
 interface Place {
   id: string;
   name: string;
@@ -30,7 +29,6 @@ const FoodScreen: React.FC = () => {
   const [favoritedItems, setFavoritedItems] = useState<Set<string>>(new Set());
   const [loadingFavorites, setLoadingFavorites] = useState(true);
 
-  // Fetch user location and nearby restaurants with pagination
   useEffect(() => {
     (async () => {
       try {
@@ -42,11 +40,10 @@ const FoodScreen: React.FC = () => {
         let currentLocation = await Location.getCurrentPositionAsync({});
         setUserLocation(currentLocation);
 
-        // Fetch nearby restaurants
         if (GOOGLE_API_KEY) {
           let allPlaces: Place[] = [];
           let nextPageToken: string | undefined = undefined;
-          const maxPages = 3; // Fetch up to 3 pages (60 results)
+          const maxPages = 3;
 
           for (let page = 0; page < maxPages; page++) {
             const url = nextPageToken
@@ -70,12 +67,9 @@ const FoodScreen: React.FC = () => {
                 longitude: place.geometry.location.lng,
               }));
               allPlaces = [...allPlaces, ...fetchedPlaces];
-              setPlaces(allPlaces); // Update state incrementally to show results as they load
-
+              setPlaces(allPlaces);
               nextPageToken = data.next_page_token;
               if (!nextPageToken || page === maxPages - 1) break;
-
-              // Wait 2 seconds before requesting the next page, as per API requirements
               await new Promise((resolve) => setTimeout(resolve, 2000));
             } else {
               console.error('Places API error:', data.status, data.error_message || 'Unknown error');
@@ -93,7 +87,6 @@ const FoodScreen: React.FC = () => {
     })();
   }, []);
 
-  // Subscribe to auth state and favorites
   useEffect(() => {
     const unsubscribeAuth = auth.onAuthStateChanged((user) => {
       if (user) {
@@ -125,7 +118,6 @@ const FoodScreen: React.FC = () => {
     return () => unsubscribeAuth();
   }, []);
 
-  // Toggle favorite for a spot
   const toggleFavorite = async (item: Place) => {
     const user = auth.currentUser;
     if (!user) {
@@ -165,7 +157,6 @@ const FoodScreen: React.FC = () => {
     }
   };
 
-  // Render each place card
   const renderPlaceItem = ({ item }: { item: Place }) => {
     const compositeKey = `spot-${item.id}`;
     const isFavorited = favoritedItems.has(compositeKey);
@@ -180,27 +171,23 @@ const FoodScreen: React.FC = () => {
         style={styles.card}
       >
         <Image source={{ uri: item.image }} style={styles.cardImage} />
-        <TouchableOpacity
-          style={styles.heartIcon}
-          onPress={() => toggleFavorite(item)}
-        >
-          <Ionicons
-            name={isFavorited ? 'heart' : 'heart-outline'}
-            size={20}
-            color={isFavorited ? 'red' : '#fff'}
-          />
-        </TouchableOpacity>
         <Text style={styles.cardTitle}>{item.name}</Text>
         <View style={styles.locationRow}>
           <Ionicons name="location-outline" size={16} color="#666" />
           <Text style={styles.locationText}>{item.location}</Text>
         </View>
         <View style={styles.ratingPriceRow}>
-          <View style={styles.rating}>
-            <Ionicons name="star" size={16} color="#FFD700" />
-            <Text style={styles.ratingText}>{item.rating || 'N/A'}</Text>
-          </View>
           <Text style={styles.priceText}>{item.price}</Text>
+          <TouchableOpacity
+            style={styles.heartIcon}
+            onPress={() => toggleFavorite(item)}
+          >
+            <Ionicons
+              name={isFavorited ? 'heart' : 'heart-outline'}
+              size={20}
+              color={isFavorited ? '#780EBF' : '#999'}
+            />
+          </TouchableOpacity>
         </View>
       </TouchableOpacity>
     );
@@ -208,7 +195,6 @@ const FoodScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      {/* Header */}
       <View style={styles.header}>
         <TouchableOpacity style={styles.backButton}>
           <Ionicons name="arrow-back" size={24} color="#000" />
@@ -216,7 +202,6 @@ const FoodScreen: React.FC = () => {
         <Text style={styles.headerTitle}>Food</Text>
       </View>
 
-      {/* All Popular Places Section */}
       <Text style={styles.sectionTitle}>Nearby Restaurants</Text>
       {places.length === 0 ? (
         <Text style={styles.loadingText}>Loading restaurants...</Text>
@@ -235,7 +220,6 @@ const FoodScreen: React.FC = () => {
   );
 };
 
-// Styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -259,86 +243,61 @@ const styles = StyleSheet.create({
     color: '#333',
   },
   sectionTitle: {
-    fontSize: 20,
-    fontWeight: 'bold',
-    color: '#333',
-    marginVertical: 16,
+    fontSize: 18,
+    fontWeight: '600',
+    marginBottom: 8,
+  },
+  loadingText: {
+    marginTop: 20,
+    textAlign: 'center',
+    color: '#666',
+  },
+  listContent: {
+    paddingBottom: 20,
   },
   columnWrapper: {
     justifyContent: 'space-between',
   },
-  listContent: {
-    paddingBottom: 80,
-  },
   card: {
-    backgroundColor: '#fff',
+    backgroundColor: '#f9f9f9',
     borderRadius: 12,
+    padding: 10,
     marginBottom: 16,
     width: '48%',
-    elevation: 3,
-    shadowColor: '#000',
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 4,
   },
   cardImage: {
     width: '100%',
     height: 120,
-    borderTopLeftRadius: 12,
-    borderTopRightRadius: 12,
-  },
-  heartIcon: {
-    position: 'absolute',
-    top: 8,
-    right: 8,
-    backgroundColor: 'rgba(0, 0, 0, 0.3)',
-    borderRadius: 20,
-    padding: 4,
+    borderRadius: 10,
   },
   cardTitle: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#333',
     marginTop: 8,
-    marginHorizontal: 8,
+    color: '#333',
   },
   locationRow: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginHorizontal: 8,
     marginTop: 4,
   },
   locationText: {
-    fontSize: 14,
-    color: '#666',
     marginLeft: 4,
+    fontSize: 13,
+    color: '#666',
   },
   ratingPriceRow: {
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginHorizontal: 8,
-    marginVertical: 8,
-  },
-  rating: {
-    flexDirection: 'row',
-    alignItems: 'center',
-  },
-  ratingText: {
-    fontSize: 14,
-    color: '#333',
-    marginLeft: 4,
+    marginTop: 6,
   },
   priceText: {
-    fontSize: 14,
-    fontWeight: 'bold',
-    color: '#333',
+    fontSize: 13,
+    color: '#444',
   },
-  loadingText: {
-    fontSize: 16,
-    color: '#666',
-    textAlign: 'center',
-    marginTop: 20,
+  heartIcon: {
+    padding: 4,
   },
 });
 
