@@ -164,8 +164,8 @@ const FoodScreen: React.FC = () => {
       <TouchableOpacity
         onPress={() =>
           router.push({
-            pathname: '/maps',
-            params: { places: JSON.stringify(places), selectedPlaceId: item.id },
+            pathname: '/spots/[id]',
+            params: { id: item.id, places: JSON.stringify(places) },
           })
         }
         style={styles.card}
