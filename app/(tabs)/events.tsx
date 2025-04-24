@@ -23,7 +23,7 @@ const featuredEvent = {
   time: '4 PM, 29 Mar',
   rating: 4.8, // Hypothetical rating
   attendees: 120, // Hypothetical number of attendees
-  image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop'
+  image: 'https://unsplash.com/photos/purple-and-blue-lights-on-stage-uHzf13WevGc&auto=format&fit=crop'
 };
 
 const events: Event[] = [
@@ -64,7 +64,7 @@ const events: Event[] = [
     location: 'Dwarka, Delhi',
     latitude: 28.5916,
     longitude: 77.0460,
-    image: 'https://unsplash.com/photos/a-group-of-women-running-down-a-street-skoTn6uzKE8&auto=format&fit=crop',
+    image: 'https://unsplash.com/photos/group-of-people-running-on-the-road-during-daytime-4oK5BlObZXg&auto=format&fit=crop',
     type: 'event',
   },
   {

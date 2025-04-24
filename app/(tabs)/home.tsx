@@ -6,6 +6,13 @@ import { collection, query, getDocs, where, onSnapshot } from 'firebase/firestor
 import { auth, db } from '@/FirebaseConfig';
 import { FavoriteService } from '@/app/services/firestore-services';
 import { useRestaurants } from '../../context/RestaurantData';
+import zamnaImg from 'assets/images/zamna.jpg';
+import marathonImg from '../assets/images/marathon.jpg';
+import deviImg from '../assets/images/devi.jpg';
+import autoexpoImg from '../assets/images/autoexpo.jpg';
+import edufairImg from '../../assets/images/edufair.jpg';
+import fairImg from '../assets/images/fair.jpg';
+
 
 interface Spot {
   id: string;
@@ -35,7 +42,8 @@ const events: Event[] = [
     location: 'Gurugram',
     latitude: 28.6980,
     longitude: 77.1325,
-    image: 'https://images.unsplash.com/photo-1506157786151-b8491531f063?q=80&w=2070&auto=format&fit=crop',
+    image:"https://unsplash.com/photos/woman-in-yellow-shirt-smoking-cigarette-PNd98-zAnU0&auto=format&fit=crop",
+  
     type: 'event',
   },
   {
