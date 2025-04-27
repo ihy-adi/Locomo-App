@@ -12,7 +12,7 @@ const eventsData = [
     location: 'Gurugram',
     latitude: 28.6980,
     longitude: 77.1325,
-    image : "https://images.unsplash.com/photo-1665667283041-5709a0bfc88f?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHVycGxlJTIwY29uY2VydHxlbnwwfHwwfHx8MA%3D%3D",
+    image: "https://images.unsplash.com/photo-1665667283041-5709a0bfc88f?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8M3x8cHVycGxlJTIwY29uY2VydHxlbnwwfHwwfHx8MA%3D%3D",
     type: 'event',
     description: 'A vibrant cultural festival showcasing Indian heritage and traditions with live music, dance performances, and authentic cuisine.',
     organizer: 'Zamna Events Co.',
@@ -26,7 +26,7 @@ const eventsData = [
     location: 'Pitampura, Delhi',
     latitude: 28.6980,
     longitude: 77.1325,
-    image:"https://images.unsplash.com/photo-1569263835889-9e47e06115f2?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZGV2aSUyMGFydHxlbnwwfHwwfHx8MA%3D%3D",
+    image: "https://images.unsplash.com/photo-1569263835889-9e47e06115f2?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8Nnx8ZGV2aSUyMGFydHxlbnwwfHwwfHx8MA%3D%3D",
     type: 'event',
     description: 'Hands-on workshop led by expert artists to learn Madhubani and Warli painting techniques.',
     organizer: 'Artisans Guild Delhi',
@@ -40,7 +40,7 @@ const eventsData = [
     location: 'Connaught Place, New Delhi',
     latitude: 28.6270,
     longitude: 77.2190,
-    image : "https://images.unsplash.com/photo-1557734864-c78b6dfef1b1?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGVkdWNhdGlvbiUyMGZhaXJ8ZW58MHx8MHx8fDA%3D",
+    image: "https://images.unsplash.com/photo-1557734864-c78b6dfef1b1?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGVkdWNhdGlvbiUyMGZhaXJ8ZW58MHx8MHx8fDA%3D",
     type: 'event',
     description: 'An expo connecting students with top universities worldwide, featuring seminars, counselling sessions, and scholarship info.',
     organizer: 'EduWorld Consultants',
@@ -54,7 +54,7 @@ const eventsData = [
     location: 'Dwarka, Delhi',
     latitude: 28.5916,
     longitude: 77.0460,
-    image : "https://images.unsplash.com/photo-1719299246434-9fa4f89f61e8?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fG1vbSUyMG1hcmF0aG9ufGVufDB8fDB8fHww",
+    image: "https://images.unsplash.com/photo-1719299246434-9fa4f89f61e8?w=400&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fG1vbSUyMG1hcmF0aG9ufGVufDB8fDB8fHww",
     type: 'event',
     description: 'A 5K fun run to celebrate mothers, open for families, includes medal for participants and post-run brunch.',
     organizer: 'RunForGood Foundation',
@@ -68,7 +68,7 @@ const eventsData = [
     location: 'Pragati Maidan, New Delhi',
     latitude: 28.6139,
     longitude: 77.2480,
-    image : "https://images.unsplash.com/photo-1682591701233-b2dfab9d6424?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGNhciUyMGV4aGliaXRpb258ZW58MHx8MHx8fDA%3D",
+    image: "https://images.unsplash.com/photo-1682591701233-b2dfab9d6424?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fGNhciUyMGV4aGliaXRpb258ZW58MHx8MHx8fDA%3D",
     type: 'event',
     description: 'India\'s premier automobile expo showcasing the latest in automotive tech, electric vehicles, and interactive demos.',
     organizer: 'AutoExpo India',
@@ -82,7 +82,7 @@ const eventsData = [
     location: 'Greater Noida',
     latitude: 28.4618,
     longitude: 77.5001,
-    image : "https://images.unsplash.com/photo-1703439524413-5ac9e2059f8b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTAwfHxjYXJuaXZhbCUyMGRlbGhpfGVufDB8fDB8fHww",
+    image: "https://images.unsplash.com/photo-1703439524413-5ac9e2059f8b?w=600&auto=format&fit=crop&q=60&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTAwfHxjYXJuaXZhbCUyMGRlbGhpfGVufDB8fDB8fHww",
     type: 'event',
     description: 'Leading trade fair for handicrafts, home decor, and lifestyle products with global exhibitors and buyers.',
     organizer: 'IHGF Federation',
@@ -160,8 +160,18 @@ const EventDetails = () => {
             </View>
           </View>
           
-          <TouchableOpacity style={styles.bookButton}>
-            <Text style={styles.bookButtonText}>{"Book Tickets"}</Text>
+          <TouchableOpacity 
+            style={styles.bookButton}
+            onPress={() => {
+              router.push({
+                pathname: '/maps',
+                params: {
+                  selectedEventId: eventData.id,
+                },
+              });
+            }}
+          >
+            <Text style={styles.bookButtonText}>{"See on Maps"}</Text>
           </TouchableOpacity>
         </View>
       </ScrollView>
